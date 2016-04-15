@@ -11,3 +11,6 @@ C:\Users\UserX\Documents\Visual Studio 2013\Projects\SNAP7TEST\SNAP7TEST\bin\Deb
 C:\Users\UserX\Documents\Visual Studio 2013\Projects\SNAP7TEST\SNAP7TEST\obj\Debug\SNAP7TEST.Mainform.resources
 C:\Users\UserX\Documents\Visual Studio 2013\Projects\SNAP7TEST\SNAP7TEST\bin\Debug\MySql.Data.dll
 C:\Users\UserX\Documents\Visual Studio 2013\Projects\SNAP7TEST\SNAP7TEST\obj\Debug\SNAP7TEST.exe.licenses
+D:\visual studio 2013\Github\IndustrialSmartTerminal\Moudletest\SNAP7TEST\bin\Debug\SNAP7TEST.exe.config
+D:\visual studio 2013\Github\IndustrialSmartTerminal\Moudletest\SNAP7TEST\obj\Debug\SNAP7TEST.exe
+D:\visual studio 2013\Github\IndustrialSmartTerminal\Moudletest\SNAP7TEST\obj\Debug\SNAP7TEST.pdb
