@@ -15,7 +15,10 @@ using System.Threading;
 
 namespace prototype_1
 {
-    public class UDiskMonitor:BaseClass.TestForm
+    /// <summary>
+    /// Detect Flash Device
+    /// </summary>
+    public class UDiskMonitor:Form
     {
         bool isInsert = false;
         String UsbName;

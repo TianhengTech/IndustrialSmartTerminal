@@ -40,6 +40,7 @@ namespace prototype_1
         public static Dictionary<string, string> realtime_gui = new Dictionary<string, string>();
         public static Dictionary<string, string> warn_info = new Dictionary<string, string>();
 
+
         //获取内网IP
         public static string GetInternalIP()
         {
