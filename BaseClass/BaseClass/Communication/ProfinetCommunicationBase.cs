@@ -24,9 +24,9 @@ namespace BaseClass.Communication
         {
             return true;
         }
-        protected object IsConneted(object Client)
+        protected object IsConneted
         {
-            return true;
+            get;
         }
         protected object Destory(object Client)
         {
