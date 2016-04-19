@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BaseClass.Communication
 {
-    class ModbusBase
+    class ModbusIOBase
     {
         String Connectiontype;
-        public ModbusBase()
+        public ModbusIOBase()
         {
 
         }
@@ -30,9 +30,9 @@ namespace BaseClass.Communication
         {
             return true;
         }
-        protected object IsConnected()
+        protected object IsConnected
         {
-            return true;
+            get { return true; }
         }
         protected object ReadRegister(int slaveaddress,string registertype,int start,int amount,byte[] ReadData)
         {
@@ -42,6 +42,19 @@ namespace BaseClass.Communication
         {
             return true;
         }
-
+        protected int SetReadTimeOut
+        {
+            set
+            {
+                
+            }
+        }
+        protected int SetReadWriteOut
+        {
+            set
+            {
+                
+            }
+        }
     }
 }
