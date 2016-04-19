@@ -40,6 +40,10 @@ namespace BaseClass.FileEditor
         {
             return true;
         }
+        protected object Exists(string filepath)
+        {
+            return true;
+        }
 
 
 
