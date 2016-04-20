@@ -36,7 +36,15 @@ namespace BaseClass.Communication
         {
             return true;
         }
+        protected object ReadDB(string Area,int DBnumber, int start, int Amount, int WordLen, byte[] buffer)
+        {
+            return true;
+        }
         protected object Write(string Area, int start, int Amount, int WordLen, byte[] buffer)
+        {
+            return true;
+        }
+        protected object WriteDB(string Area,int DBnuber, int start, int Amount, int WordLen, byte[] buffer)
         {
             return true;
         }
