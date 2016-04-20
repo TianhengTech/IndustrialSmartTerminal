@@ -6,56 +6,88 @@ using System.Threading.Tasks;
 
 namespace BaseClass.Communication
 {
-    class ProfinetCommunicationBase
+    public abstract class ProfinetCommunicationBase
     {
         public ProfinetCommunicationBase()
         {
 
         }
-        protected object SetParameters(IntPtr Client, string Address,UInt16 LocalTSAP,UInt16 RemoteTSAP)
+        public virtual object SetParameters(string Address,UInt16 LocalTSAP,UInt16 RemoteTSAP)
         {
             return true;
         }
-        protected object ConnectTo(string Address,int Rack,int Slot)
+        public virtual int ConnectTo(string Address,int Rack,int Slot)
+        {
+            return 0;
+        }
+        public virtual int ConnectTo_200(string Address, UInt16 LocalTSAP, UInt16 RemoteTSAP)
+        {
+            return 0;
+        }
+        public virtual int Connect()
+        {
+            return 0;
+        }
+        public virtual int Disconnect()
+        {
+            return 0;
+        }
+        public virtual bool IsConneted()
         {
             return true;
         }
-        protected object Connect(string Address)
+        public virtual int PlcStop()
         {
+            return 0;
+        }
+        public virtual int PlcHotStart()
+        {
+            return 0;
+        }
+        public virtual int PlcColdStart()
+        {
+            return 0;
+        }
+        public virtual object Destory(object Client)
+        {
+            Client = null;
             return true;
         }
-        protected object Disconnect(object Client, string Address, UInt16 LocalTSAP, UInt16 RemoteTSAP)
+        public virtual int Read(int Area,int start,int Amount,int WordLen,byte[] buffer)
         {
-            return true;
+            return 0;
         }
-        protected object IsConneted
+        public virtual int ReadDB(int Area,int DBnumber, int start, int Amount, int WordLen, byte[] buffer)
         {
-            get;
+            return 0;
         }
-        protected object Destory(object Client)
+        public virtual int Write(int Area, int start, int Amount, int WordLen, byte[] buffer)
         {
-            return true;
+            return 0;
         }
-        protected object Read(string Area,int start,int Amount,int WordLen,byte[] buffer)
+        public virtual int WriteDB(int Area,int DBnmuber, int start, int Amount, int WordLen, byte[] buffer)
         {
-            return true;
+            return 0;
         }
-        protected object ReadDB(string Area,int DBnumber, int start, int Amount, int WordLen, byte[] buffer)
+        public virtual string PLCstatus()
         {
-            return true;
+            return "";
         }
-        protected object Write(string Area, int start, int Amount, int WordLen, byte[] buffer)
+        public virtual DateTime GetPlctime()
         {
-            return true;
+            return DateTime.Today;
         }
-        protected object WriteDB(string Area,int DBnuber, int start, int Amount, int WordLen, byte[] buffer)
+        public virtual int SetPlctime(DateTime time)
         {
-            return true;
+            return 0;
         }
-        protected object PLCstatus(object Client)
+        public virtual int ReadMultiVars(Snap7.S7Client.S7DataItem[] itemlist,int itemcount)
         {
-            return true;
+            return 0;
         }
-
+        public virtual int WriteMultiVars(Snap7.S7Client.S7DataItem[] itemlist,int itemcount)
+        {
+            return 0;
+        }
     }
 }
