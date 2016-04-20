@@ -16,7 +16,11 @@ namespace BaseClass.Communication
         {
             return true;
         }
-        protected object Connect(string Address,int Rack,int Slot)
+        protected object ConnectTo(string Address,int Rack,int Slot)
+        {
+            return true;
+        }
+        protected object Connect(string Address)
         {
             return true;
         }
