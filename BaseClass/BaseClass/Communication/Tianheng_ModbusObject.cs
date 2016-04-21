@@ -97,6 +97,113 @@ namespace BaseClass.Communication
             Master=ModbusIpMaster.CreateIp(tcpClient);
             return Master;
         }
+        /// <summary>
+        /// Read multiple registers
+        /// </summary>
+        /// <param name="slaveaddress"></param>
+        /// <param name="registertype"></param>
+        /// <param name="start"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public override ushort[] ReadRegister(byte slaveaddress, int registertype, ushort start, ushort amount)
+        {
+            switch(registertype)
+            {
+                case(0x01):
+                    return Master.ReadHoldingRegisters(slaveaddress, start, amount);
+                case(0x02):
+                    return Master.ReadInputRegisters(slaveaddress, start, amount);
+                default:
+                    throw new TypeAccessException("Invalid type");
+            }            
+        }
+        /// <summary>
+        /// Read multiple coils/inputs
+        /// </summary>
+        /// <param name="slaveaddress"></param>
+        /// <param name="type"></param>
+        /// <param name="start"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public override bool[] ReadInOut(byte slaveaddress, int type, ushort start, ushort amount)
+        {
+            switch (type)
+            {
+                case (0x03):
+                    return Master.ReadInputs(slaveaddress, start, amount);
+                case (0x04):
+                    return Master.ReadCoils(slaveaddress, start, amount);
+                default:
+                    throw new TypeAccessException("Invalid type");
+            }
+        }
+        /// <summary>
+        /// Write 1 to 123 contiguous registers
+        /// </summary>
+        /// <param name="slaveaddress"></param>
+        /// <param name="registertype"></param>
+        /// <param name="start"></param>
+        /// <param name="WriteData"></param>
+        public override void WriteRegister(byte slaveaddress, int registertype, ushort start, ushort[] WriteData)
+        {
+            switch (registertype)
+            {
+                case (0x01):
+                    Master.WriteMultipleRegisters(slaveaddress, start, WriteData);
+                    return;
+                case (0x02):
+                    Master.WriteMultipleRegisters(slaveaddress, start, WriteData);
+                    return;
+                default:
+                    throw new TypeAccessException("Invalid type");
+            }       
+        }
+        /// <summary>
+        /// Write a sequence of coils
+        /// </summary>
+        /// <param name="slaveaddress"></param>
+        /// <param name="type"></param>
+        /// <param name="start"></param>
+        /// <param name="WriteData"></param>
+        public override void WriteCoils(byte slaveaddress, int type, ushort start, bool[] WriteData)
+        {
+            switch (type)
+            {
+                case (0x04):
+                    Master.WriteMultipleCoils(slaveaddress, start, WriteData);
+                    return;
+                default:
+                    throw new TypeAccessException("Invalid type");
+            }
+        }
+        /// <summary>
+        /// Read timeout in milliseconds
+        /// </summary>
+        public override int ReadTimeOut
+        {
+            get
+            {
+                return Master.Transport.ReadTimeout;
+            }
+            set
+            {
+                Master.Transport.ReadTimeout = value;
+            }
+        }
+        /// <summary>
+        /// Write timeout in milliseconds
+        /// </summary>
+        public override int WriteOut
+        {
+            get
+            {
+                return Master.Transport.WriteTimeout;
+            }
+            set
+            {
+                Master.Transport.WriteTimeout = value;
+            }
+        }
        /// <summary>
        /// Number of times to retry sending a message after encountering an faliure
        /// </summary>
@@ -119,10 +226,11 @@ namespace BaseClass.Communication
             Master.Dispose();
             return;
         }
+
         #region [Constants]
         public static readonly int HoldingRegister = 0x01;
         public static readonly int InputRegister = 0x02;
-        public static readonly int Input = 0x03;
+        public static readonly int Inputs = 0x03;
         public static readonly int Coils = 0x04;
         #endregion
 

@@ -47,24 +47,19 @@ namespace BaseClass.Communication
         {
             get { return true; }
         }
-        public abstract ushort[] ReadRegister(byte slaveaddress, string registertype, int start, int amount);
-        public abstract ushort[] WriteRegister(byte slaveaddress, string registertype, int start, byte[] WriteData);
-        public override bool[] ReadInOut(byte slaveaddress, int type, ushort start, ushort amount);
-        public override bool[] WriteInOut(byte slaveaddress, int type, ushort start, ushort amount, bool[] WriteData);
+        public abstract ushort[] ReadRegister(byte slaveaddress, int registertype, ushort start, ushort amount);
+        public abstract void WriteRegister(byte slaveaddress, int registertype, ushort start, ushort[] WriteData);
+        public abstract bool[] ReadInOut(byte slaveaddress, int registertype, ushort start, ushort amount);
+        public abstract void WriteCoils(byte slaveaddress, int type, ushort start, bool[] WriteData);
 
-        public virtual int SetReadTimeOut
+        public virtual int ReadTimeOut
         {
-            set
-            {
-                
-            }
+            set;
+            get;
         }
-        public virtual int SetReadWriteOut
+        public virtual int WriteOut
         {
-            set
-            {
-                
-            }
+            set;get;
         }
     }
 }
