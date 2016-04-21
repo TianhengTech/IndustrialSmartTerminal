@@ -13,7 +13,7 @@ namespace BaseClass.FileEditor
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static bool Exists(string fileName)
+        public override bool Exists(string fileName)
         {
             if (fileName == null || fileName.Trim() == "")
             {
@@ -34,7 +34,7 @@ namespace BaseClass.FileEditor
         /// </summary>
         /// <param name="dirName"></param>
         /// <returns></returns>
-        public static bool CreateDir(string dirName)
+        public override bool CreateDir(string dirName)
         {
             if (!Directory.Exists(dirName))
             {
@@ -49,7 +49,7 @@ namespace BaseClass.FileEditor
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static bool CreateFile(string fileName)
+        public override bool CreateFile(string fileName)
         {
             if (!File.Exists(fileName))
             {
@@ -67,7 +67,7 @@ namespace BaseClass.FileEditor
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
-        public static string Read(string fileName)
+        public override string Read(string fileName)
         {
             if (!Exists(fileName))
             {
@@ -81,7 +81,7 @@ namespace BaseClass.FileEditor
         }
 
 
-        public static string ReadLine(string fileName)
+        public  string ReadLine(string fileName)
         {
             if (!Exists(fileName))
             {
@@ -100,7 +100,7 @@ namespace BaseClass.FileEditor
         /// <param name="fileName">文件名</param>
         /// <param name="content">文件内容</param>
         /// <returns></returns>
-        public static bool Write(string fileName, string content)
+        public override bool Write(string fileName, string content)
         {
             if (!Exists(fileName) || content == null)
             {
@@ -131,7 +131,7 @@ namespace BaseClass.FileEditor
         /// <param name="fileName">文件名</param>
         /// <param name="content">内容</param>
         /// <returns></returns>
-        public static bool WriteLine(string fileName, string content)
+        public  bool WriteLine(string fileName, string content)
         {
             using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate | FileMode.Append))
             {
@@ -151,7 +151,7 @@ namespace BaseClass.FileEditor
             }
         }
 
-        public static bool CopyDir(DirectoryInfo fromDir, string toDir)
+        public  bool CopyDir(DirectoryInfo fromDir, string toDir)
         {
             return CopyDir(fromDir, toDir, fromDir.FullName);
         }
@@ -163,7 +163,7 @@ namespace BaseClass.FileEditor
         /// <param name="fromDir">被复制的目录</param>
         /// <param name="toDir">复制到的目录</param>
         /// <returns></returns>
-        public static bool CopyDir(string fromDir, string toDir)
+        public override bool CopyDir(string fromDir, string toDir)
         {
             if (fromDir == null || toDir == null)
             {
@@ -192,7 +192,7 @@ namespace BaseClass.FileEditor
         /// <param name="toDir">复制到的目录</param>
         /// <param name="rootDir">被复制的根目录</param>
         /// <returns></returns>
-        private static bool CopyDir(DirectoryInfo fromDir, string toDir, string rootDir)
+        public  bool CopyDir(DirectoryInfo fromDir, string toDir, string rootDir)
         {
             string filePath = string.Empty;
             foreach (FileInfo f in fromDir.GetFiles())
@@ -217,7 +217,7 @@ namespace BaseClass.FileEditor
         /// </summary>
         /// <param name="fileName">文件的完整路径</param>
         /// <returns></returns>
-        public static bool DeleteFile(string fileName)
+        public override bool DeleteFile(string fileName)
         {
             if (Exists(fileName))
             {
@@ -228,7 +228,7 @@ namespace BaseClass.FileEditor
         }
 
 
-        public static void DeleteDir(DirectoryInfo dir)
+        public override void DeleteDir(DirectoryInfo dir)
         {
             if (dir == null)
             {
@@ -256,7 +256,7 @@ namespace BaseClass.FileEditor
         /// <param name="dir">制定目录</param>
         /// <param name="onlyDir">是否只删除目录</param>
         /// <returns></returns>
-        public static bool DeleteDir(string dir, bool onlyDir)
+        public  bool DeleteDir(string dir, bool onlyDir)
         {
             if (dir == null || dir.Trim() == "")
             {
@@ -295,7 +295,7 @@ namespace BaseClass.FileEditor
         /// <param name="dir">目录</param>
         /// <param name="fileName">文件名</param>
         /// <returns></returns>
-        public static bool FindFile(string dir, string fileName)
+        public  bool FindFile(string dir, string fileName)
         {
             if (dir == null || dir.Trim() == "" || fileName == null || fileName.Trim() == "" || !Directory.Exists(dir))
             {
@@ -307,7 +307,7 @@ namespace BaseClass.FileEditor
 
         }
 
-        public static bool FindFile(DirectoryInfo dir, string fileName)
+        public  bool FindFile(DirectoryInfo dir, string fileName)
         {
             foreach (DirectoryInfo d in dir.GetDirectories())
             {
