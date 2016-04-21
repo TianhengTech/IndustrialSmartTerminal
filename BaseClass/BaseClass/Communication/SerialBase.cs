@@ -9,48 +9,48 @@ namespace BaseClass.Communication
 {
     class SerialBase
     {
-        bool _keepreading;
-        SerialPort serialport;
-        public SerialBase(params object[] parameters)
+        
+        public SerialBase()
         {
+
         }
-        protected object OpenPort()
+        public virtual void OpenPort()
         {
-            return true;
+            return;
         }
-        protected object ClosePort()
+        public virtual void ClosePort()
         {
-            return true;
+            return;
         }
-        protected object IsOpen
+        public virtual bool IsOpen
         {
-            get
-            {
-                return serialport.IsOpen;
-            }
-        }
-        protected int SetReadTimeOut
-        {
-            set
-            {
-                serialport.ReadTimeout = value;
-            }
-        }
-        protected int SetReadWriteOut
-        {
-            set
-            {
-                serialport.WriteTimeout = value;
-            }
+            get;
+            set;
         }
 
-        protected object SendCmd(byte[] cmd)
+        public virtual int ReadTimeOut
         {
-            return true;
+            set;
+            get;
         }
-        protected object ReadPort(byte[] readbuffer)
+        public virtual int WriteTimeOut
         {
-            return true;
+            set;
+            get;
+        }
+
+        public virtual void WriteToPort(byte[] cmd,int offset, int count)
+        {
+            return;
+        }
+        public virtual void ReadPort(byte[] readbuffer,int offset,int count)
+        {
+            return;
+        }
+
+        public virtual void  Destory()
+        {
+
         }
         
 
