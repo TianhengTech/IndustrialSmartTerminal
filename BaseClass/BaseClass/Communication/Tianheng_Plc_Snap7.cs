@@ -18,7 +18,6 @@ namespace BaseClass.Communication
             Client.Disconnect();
             
         }
-
         public override int ConnectTo(string Address, int Rack, int Slot)
         {
             return Client.ConnectTo(Address, Rack, Slot);                       
