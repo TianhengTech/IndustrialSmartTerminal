@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace prototype_1
+namespace BaseClass.FileEditor
 {
-    public class ConfigFileManager
+    class ConfigFileManager:ConfigFileBase
     {
         #region DLL库
         [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
@@ -39,7 +39,7 @@ namespace prototype_1
         public static Dictionary<string, int> addr = new Dictionary<string, int>();
         public static Dictionary<string, string> warnmsg = new Dictionary<string, string>();
 
-        public static string ReadIniData(string section, string Key, string iniFilePath)
+        public string ReadIniData(string section, string Key, string iniFilePath)
         {
             string NoText = ""; 
             if (File.Exists(iniFilePath))
@@ -53,34 +53,13 @@ namespace prototype_1
                 return String.Empty;
             }
         }
-        public static string[] ReadIniAllKeys(string section, string filePath)
-        {
-            UInt32 MAX_BUFFER = 32767;
-
-            string[] items = new string[0];
-
-            IntPtr pReturnedString = Marshal.AllocCoTaskMem((int)MAX_BUFFER * sizeof(char));
-
-            UInt32 bytesReturned = GetPrivateProfileSection(section, pReturnedString, MAX_BUFFER, filePath);
-
-            if (!(bytesReturned == MAX_BUFFER - 2) || (bytesReturned == 0))
-            {
-                string returnedString = Marshal.PtrToStringAuto(pReturnedString, (int)bytesReturned);
-
-                items = returnedString.Split(new char[] { '\0' }, StringSplitOptions.RemoveEmptyEntries);
-            }
-
-            Marshal.FreeCoTaskMem(pReturnedString);
-
-            return items;
-        }
         /// <summary>  
         /// 获取INI文件中指定节点(Section)中的所有条目(key=value形式)  
         /// </summary>  
         /// <param name="iniFile">Ini文件</param>  
         /// <param name="section">节点名称</param>  
         /// <returns>指定节点中的所有项目,没有内容返回string[0]</returns>  
-        public static string[] INIGetAllItems(string iniFile, string section)
+        public override string[] INIGetAllItems(string iniFile, string section)
         {
             //返回值形式为 key=value,例如 Color=Red  
             uint MAX_BUFFER = 32767;    //默认为32767  
@@ -109,7 +88,7 @@ namespace prototype_1
         /// <param name="iniFile">Ini文件</param>  
         /// <param name="section">节点名称</param>  
         /// <returns>如果没有内容,反回string[0]</returns>  
-        public static string[] INIGetAllItemKeys(string iniFile, string section)
+        public override string[] INIGetAllItemKeys(string iniFile, string section)
         {
             string[] value = new string[0];
             const int SIZE = 1024 * 10;
@@ -135,7 +114,7 @@ namespace prototype_1
         /// </summary>  
         /// <param name="iniFile">Ini文件</param>  
         /// <returns>所有节点,没有内容返回string[0]</returns>  
-        public static string[] INIGetAllSectionNames(string iniFile)
+        public override string[] INIGetAllSectionNames(string iniFile)
         {
             uint MAX_BUFFER = 32767;    //默认为32767  
 
@@ -158,7 +137,7 @@ namespace prototype_1
 
             return sections;
         }        
-        public static void ReadAddrIniFile(string path)
+        public void ReadAddrIniFile(string path)
         {
             
             try
@@ -166,7 +145,7 @@ namespace prototype_1
                 string[] sections = INIGetAllSectionNames(path);
                 foreach (string section in sections)
                 {
-                    string[] allKeys = ReadIniAllKeys(section, path);
+                    string[] allKeys = INIGetAllItems(path,section );
                     foreach (string Key_Value in allKeys)
                     {
                         string[] _Key_Value = Key_Value.Split('=');
@@ -181,14 +160,14 @@ namespace prototype_1
             }
            
         }
-        public static void ReadInfoIniFile(string path)
+        public void ReadInfoIniFile(string path)
         {
             try
             {
                 string[] sections = INIGetAllSectionNames(path);
                 foreach (string section in sections)
                 {
-                    string[] allKeys = ReadIniAllKeys(section, path);
+                    string[] allKeys = INIGetAllItems(path, section);
                     foreach (string Key_Value in allKeys)
                     {
                         string[] _Key_Value = Key_Value.Split('=');
@@ -213,7 +192,7 @@ namespace prototype_1
         /// <param name="section">节点，如果不存在此节点，则创建此节点</param>  
         /// <param name="items">键值对，多个用\0分隔,形如key1=value1\0key2=value2</param>  
         /// <returns></returns>  
-        public static bool INIWriteItems(string iniFile, string section, string items)
+        public override bool INIWriteItems(string iniFile, string section, string items)
         {
             if (string.IsNullOrEmpty(section))
             {
@@ -236,7 +215,7 @@ namespace prototype_1
         /// <param name="key">键</param>  
         /// <param name="value">值</param>  
         /// <returns>操作是否成功</returns>  
-        public static bool INIWriteValue(string iniFile, string section, string key, string value)
+        public override bool INIWriteValue(string iniFile, string section, string key, string value)
         {
             if (string.IsNullOrEmpty(section))
             {
@@ -264,7 +243,7 @@ namespace prototype_1
         /// <param name="section">节点</param>  
         /// <param name="key">键</param>  
         /// <returns>操作是否成功</returns>  
-        public static bool INIDeleteKey(string iniFile, string section, string key)
+        public override bool INIDeleteKey(string iniFile, string section, string key)
         {
             if (string.IsNullOrEmpty(section))
             {
@@ -285,7 +264,7 @@ namespace prototype_1
         /// <param name="iniFile">INI文件</param>  
         /// <param name="section">节点</param>  
         /// <returns>操作是否成功</returns>  
-        public static bool INIDeleteSection(string iniFile, string section)
+        public override bool INIDeleteSection(string iniFile, string section)
         {
             if (string.IsNullOrEmpty(section))
             {
@@ -301,7 +280,7 @@ namespace prototype_1
         /// <param name="iniFile">INI文件</param>  
         /// <param name="section">节点</param>  
         /// <returns>操作是否成功</returns>  
-        public static bool INIEmptySection(string iniFile, string section)
+        public bool INIEmptySection(string iniFile, string section)
         {
             if (string.IsNullOrEmpty(section))
             {
