@@ -6,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 
-namespace prototype_1{
+namespace prototype_1
+{
     public class ConfigFileManager
     {
         #region DLL库

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace prototype_1
+namespace BaseClass.FileEditor
 {
-    class TextCommand
+    class Tianheng_TextCommand : TextManagerBase
     {
         /// <summary>
         /// 判断文件是否存在
