@@ -1,121 +1,121 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Snap7;
-using System.Runtime.InteropServices;
 
 namespace BaseClass.Communication
 {
-    class TianhengPlc_Snap7:ProfinetCommunicationBase
+    internal class TianhengPlcSnap7 : ProfinetCommunicationBase
     {
+        private readonly S7Client Client = new S7Client();
 
-        S7Client Client=new S7Client();
-        
-        ~TianhengPlc_Snap7()
+        ~TianhengPlcSnap7()
         {
             Client.Disconnect();
-            
         }
-        public override int ConnectTo(string Address, int Rack, int Slot)
+
+        public override int ConnectTo(string address, int rack, int slot)
         {
-            return Client.ConnectTo(Address, Rack, Slot);                       
+            return Client.ConnectTo(address, rack, slot);
         }
-        public override int ConnectTo_200(string Address, ushort LocalTSAP, ushort RemoteTSAP)
+
+        public override int ConnectTo_200(string address, ushort localTsap, ushort remoteTsap)
         {
-            Client.SetConnectionParams(Address, LocalTSAP, RemoteTSAP);
+            Client.SetConnectionParams(address, localTsap, remoteTsap);
             return Connect();
         }
+
         public override int PlcStop()
         {
-            return Client.PlcStop();          
+            return Client.PlcStop();
         }
+
         public override bool IsConneted()
         {
             return Client.Connected();
         }
-        public override int Read(int Area, int start, int Amount, int WordLen, byte[] buffer)
-        {           
-            return Client.ReadArea(Area, 0, start, Amount, WordLen, buffer);          
-        }
-        public override int ReadDB(int Area, int DBnumber, int start, int Amount, int WordLen, byte[] buffer)
+
+        public override int Read(int area, int start, int amount, int wordLen, byte[] buffer)
         {
-            return Client.ReadArea(Area, DBnumber, start, Amount, WordLen, buffer);
+            return Client.ReadArea(area, 0, start, amount, wordLen, buffer);
         }
-        public override int Write(int Area, int start, int Amount, int WordLen, byte[] buffer)
+
+        public override int ReadDb(int area, int dBnumber, int start, int amount, int wordLen, byte[] buffer)
         {
-            return Client.WriteArea(Area, 0,start, Amount, WordLen, buffer);
+            return Client.ReadArea(area, dBnumber, start, amount, wordLen, buffer);
         }
-        public override int WriteDB(int Area, int DBnumber, int start, int Amount, int WordLen, byte[] buffer)
+
+        public override int Write(int area, int start, int amount, int wordLen, byte[] buffer)
         {
-            return Client.WriteArea(Area, DBnumber, start, Amount, WordLen, buffer);
+            return Client.WriteArea(area, 0, start, amount, wordLen, buffer);
         }
+
+        public override int WriteDb(int area, int dBnumber, int start, int amount, int wordLen, byte[] buffer)
+        {
+            return Client.WriteArea(area, dBnumber, start, amount, wordLen, buffer);
+        }
+
         public override int PlcHotStart()
         {
- 	        return Client.PlcHotStart();
+            return Client.PlcHotStart();
         }
+
         public override int PlcColdStart()
         {
             return Client.PlcColdStart();
         }
-        public override string PLCstatus()
+
+        public override string PlCstatus()
         {
-            int status=0;
+            var status = 0;
             Client.PlcGetStatus(ref status);
-            if(status ==4)
+            if (status == 4)
             {
                 return "PLC Stop";
             }
-            else if(status == 8)
+            if (status == 8)
             {
                 return "PLC Run";
             }
-            else
-            {
-                return "Status Unknown";
-            }
+            return "Status Unknown";
         }
+
         public override DateTime GetPlctime()
         {
-            DateTime time = Convert.ToDateTime("0000-00-00");
-            int i=Client.GetPlcDateTime(ref time);
-            if(i==0) 
+            var time = Convert.ToDateTime("0000-00-00");
+            var i = Client.GetPlcDateTime(ref time);
+            if (i == 0)
             {
-                  return time;
+                return time;
             }
-            else
-            {
-                throw new Exception("Unable to get DateTime,Error code" + i.ToString());          
-            }
-          
+            throw new Exception("Unable to get DateTime,Error code" + i);
         }
+
         public override int SetPlctime(DateTime time)
         {
             return Client.SetPlcDateTime(time);
         }
+
         public override int ReadMultiVars(S7Client.S7DataItem[] itemlist, int itemcount)
         {
-            return Client.ReadMultiVars(itemlist,itemcount);
+            return Client.ReadMultiVars(itemlist, itemcount);
         }
+
         public override int WriteMultiVars(S7Client.S7DataItem[] itemlist, int itemcount)
         {
-            return Client.WriteMultiVars(itemlist,itemcount);
+            return Client.WriteMultiVars(itemlist, itemcount);
         }
+
         public override int Connect()
         {
             return Client.Connect();
         }
+
         public override int Disconnect()
         {
             return Client.Disconnect();
         }
 
-      
-
-
-
         #region [Constants, private vars and TypeDefs]
+
         private const int MsgTextLen = 1024;
         // Error codes
         public static readonly uint errNegotiatingPDU = 0x00100000;
@@ -157,7 +157,7 @@ namespace BaseClass.Communication
         public static readonly uint errCliInvalidParamNumber = 0x02500000;
         public static readonly uint errCliCannotChangeParam = 0x02600000;
 
-        // Area ID
+        // area ID
         public static readonly byte S7AreaPE = 0x81;
         public static readonly byte S7AreaPA = 0x82;
         public static readonly byte S7AreaMK = 0x83;
@@ -204,19 +204,14 @@ namespace BaseClass.Communication
         public static readonly int MaxVars = 20;
 
         // Client Connection Type
-        public static readonly UInt16 CONNTYPE_PG = 0x01;  // Connect to the PLC as a PG
-        public static readonly UInt16 CONNTYPE_OP = 0x02;  // Connect to the PLC as an OP
-        public static readonly UInt16 CONNTYPE_BASIC = 0x03;  // Basic connection 
+        public static readonly ushort CONNTYPE_PG = 0x01; // Connect to the PLC as a PG
+        public static readonly ushort CONNTYPE_OP = 0x02; // Connect to the PLC as an OP
+        public static readonly ushort CONNTYPE_BASIC = 0x03; // Basic connection 
 
         // Job
         private const int JobComplete = 0;
         private const int JobPending = 1;
+
         #endregion
-        
-
-
-      
-
-
     }
 }
