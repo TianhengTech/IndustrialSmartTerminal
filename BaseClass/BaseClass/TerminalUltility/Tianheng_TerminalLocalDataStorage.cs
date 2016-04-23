@@ -6,7 +6,8 @@ using System.Data.SQLite;//这个可以去网上下载
 using System.Configuration;
 using System.Web;
 
-namespace prototype_1
+namespace BaseClass.TerminalUltility
+{
 {
     public class TerminalLocalDataStorage
     {

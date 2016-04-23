@@ -5,7 +5,8 @@ using System.Text;
 using System.Collections;
 using System.Collections.Concurrent;
 
-namespace prototype_1
+namespace BaseClass.TerminalUltility
+{
 {
     class TerminalQueues
     {

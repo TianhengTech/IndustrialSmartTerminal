@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace prototype_1
+namespace BaseClass.TerminalUltility
+{
 {
     //定义PLC数据格式
     class PlcCommand

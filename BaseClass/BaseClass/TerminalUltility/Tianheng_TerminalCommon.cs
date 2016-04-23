@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Net;
 
-namespace prototype_1
+namespace BaseClass.TerminalUltility
+{
 {
     class TerminalCommon
     {
