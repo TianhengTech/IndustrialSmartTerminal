@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
+using System.Security;
+using System.Text;
 
 namespace BaseClass.FileEditor
 {
-    class TianhengTextCommand : TextManagerBase
+    internal class TianhengTextCommand : TextManagerBase
     {
         /// <summary>
-        /// 判断文件是否存在
+        ///     判断文件是否存在
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
@@ -30,22 +29,22 @@ namespace BaseClass.FileEditor
 
 
         /// <summary>
-        /// 创建文件夹
+        ///     创建文件夹
         /// </summary>
-        /// <param name="dirName"></param>
+        /// <param name="dirpath"></param>
         /// <returns></returns>
-        public override bool CreateDir(string dirName)
+        public override bool CreateDir(string dirpath)
         {
-            if (!Directory.Exists(dirName))
+            if (!Directory.Exists(dirpath))
             {
-                Directory.CreateDirectory(dirName);
+                Directory.CreateDirectory(dirpath);
             }
             return true;
         }
 
 
         /// <summary>
-        /// 创建文件
+        ///     创建文件
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
@@ -53,17 +52,16 @@ namespace BaseClass.FileEditor
         {
             if (!File.Exists(fileName))
             {
-                FileStream fs = File.Create(fileName);
+                var fs = File.Create(fileName);
                 fs.Close();
                 fs.Dispose();
             }
             return true;
-
         }
 
 
         /// <summary>
-        /// 读文件内容
+        ///     读文件内容
         /// </summary>
         /// <param name="fileName"></param>
         /// <returns></returns>
@@ -74,20 +72,20 @@ namespace BaseClass.FileEditor
                 return null;
             }
             //将文件信息读入流中
-            using (FileStream fs = new FileStream(fileName, FileMode.Open))
+            using (var fs = new FileStream(fileName, FileMode.Open))
             {
                 return new StreamReader(fs).ReadToEnd();
             }
         }
 
 
-        public  string ReadLine(string fileName)
+        public string ReadLine(string fileName)
         {
             if (!Exists(fileName))
             {
                 return null;
             }
-            using (FileStream fs = new FileStream(fileName, FileMode.Open))
+            using (var fs = new FileStream(fileName, FileMode.Open))
             {
                 return new StreamReader(fs).ReadLine();
             }
@@ -95,7 +93,7 @@ namespace BaseClass.FileEditor
 
 
         /// <summary>
-        /// 写文件
+        ///     写文件
         /// </summary>
         /// <param name="fileName">文件名</param>
         /// <param name="content">文件内容</param>
@@ -108,16 +106,16 @@ namespace BaseClass.FileEditor
             }
 
             //将文件信息读入流中
-            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate))
+            using (var fs = new FileStream(fileName, FileMode.OpenOrCreate))
             {
-                lock (fs)//锁住流
+                lock (fs) //锁住流
                 {
                     if (!fs.CanWrite)
                     {
-                        throw new System.Security.SecurityException("文件fileName=" + fileName + "是只读文件不能写入!");
+                        throw new SecurityException("文件fileName=" + fileName + "是只读文件不能写入!");
                     }
 
-                    byte[] buffer = Encoding.Default.GetBytes(content);
+                    var buffer = Encoding.Default.GetBytes(content);
                     fs.Write(buffer, 0, buffer.Length);
                     return true;
                 }
@@ -126,23 +124,23 @@ namespace BaseClass.FileEditor
 
 
         /// <summary>
-        /// 写入一行
+        ///     写入一行
         /// </summary>
         /// <param name="fileName">文件名</param>
         /// <param name="content">内容</param>
         /// <returns></returns>
-        public  bool WriteLine(string fileName, string content)
+        public bool WriteLine(string fileName, string content)
         {
-            using (FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate | FileMode.Append))
+            using (var fs = new FileStream(fileName, FileMode.OpenOrCreate | FileMode.Append))
             {
                 lock (fs)
                 {
                     if (!fs.CanWrite)
                     {
-                        throw new System.Security.SecurityException("文件fileName=" + fileName + "是只读文件不能写入!");
+                        throw new SecurityException("文件fileName=" + fileName + "是只读文件不能写入!");
                     }
 
-                    StreamWriter sw = new StreamWriter(fs);
+                    var sw = new StreamWriter(fs);
                     sw.WriteLine(content);
                     sw.Dispose();
                     sw.Close();
@@ -151,14 +149,14 @@ namespace BaseClass.FileEditor
             }
         }
 
-        public  bool CopyDir(DirectoryInfo fromDir, string toDir)
+        public bool CopyDir(DirectoryInfo fromDir, string toDir)
         {
             return CopyDir(fromDir, toDir, fromDir.FullName);
         }
 
 
         /// <summary>
-        /// 复制目录
+        ///     复制目录
         /// </summary>
         /// <param name="fromDir">被复制的目录</param>
         /// <param name="toDir">复制到的目录</param>
@@ -180,30 +178,30 @@ namespace BaseClass.FileEditor
                 throw new IOException("目录fromDir=" + fromDir + "不存在");
             }
 
-            DirectoryInfo dir = new DirectoryInfo(fromDir);
+            var dir = new DirectoryInfo(fromDir);
             return CopyDir(dir, toDir, dir.FullName);
         }
 
 
         /// <summary>
-        /// 复制目录
+        ///     复制目录
         /// </summary>
         /// <param name="fromDir">被复制的目录</param>
         /// <param name="toDir">复制到的目录</param>
         /// <param name="rootDir">被复制的根目录</param>
         /// <returns></returns>
-        public  bool CopyDir(DirectoryInfo fromDir, string toDir, string rootDir)
+        public bool CopyDir(DirectoryInfo fromDir, string toDir, string rootDir)
         {
-            string filePath = string.Empty;
-            foreach (FileInfo f in fromDir.GetFiles())
+            var filePath = string.Empty;
+            foreach (var f in fromDir.GetFiles())
             {
                 filePath = toDir + f.FullName.Substring(rootDir.Length);
-                string newDir = filePath.Substring(0, filePath.LastIndexOf("\\"));
+                var newDir = filePath.Substring(0, filePath.LastIndexOf("\\"));
                 CreateDir(newDir);
                 File.Copy(f.FullName, filePath, true);
             }
 
-            foreach (DirectoryInfo dir in fromDir.GetDirectories())
+            foreach (var dir in fromDir.GetDirectories())
             {
                 CopyDir(dir, toDir, rootDir);
             }
@@ -213,7 +211,7 @@ namespace BaseClass.FileEditor
 
 
         /// <summary>
-        /// 删除文件
+        ///     删除文件
         /// </summary>
         /// <param name="fileName">文件的完整路径</param>
         /// <returns></returns>
@@ -235,28 +233,27 @@ namespace BaseClass.FileEditor
                 throw new NullReferenceException("目录不存在");
             }
 
-            foreach (DirectoryInfo d in dir.GetDirectories())
+            foreach (var d in dir.GetDirectories())
             {
                 DeleteDir(d);
             }
 
-            foreach (FileInfo f in dir.GetFiles())
+            foreach (var f in dir.GetFiles())
             {
                 DeleteFile(f.FullName);
             }
 
             dir.Delete();
-
         }
 
 
         /// <summary>
-        /// 删除目录
+        ///     删除目录
         /// </summary>
         /// <param name="dir">制定目录</param>
         /// <param name="onlyDir">是否只删除目录</param>
         /// <returns></returns>
-        public  bool DeleteDir(string dir, bool onlyDir)
+        public bool DeleteDir(string dir, bool onlyDir)
         {
             if (dir == null || dir.Trim() == "")
             {
@@ -268,7 +265,7 @@ namespace BaseClass.FileEditor
                 return false;
             }
 
-            DirectoryInfo dirInfo = new DirectoryInfo(dir);
+            var dirInfo = new DirectoryInfo(dir);
             if (dirInfo.GetFiles().Length == 0 && dirInfo.GetDirectories().Length == 0)
             {
                 Directory.Delete(dir);
@@ -280,36 +277,31 @@ namespace BaseClass.FileEditor
             {
                 return false;
             }
-            else
-            {
-                DeleteDir(dirInfo);
-                return true;
-            }
-
+            DeleteDir(dirInfo);
+            return true;
         }
 
 
         /// <summary>
-        /// 在指定的目录中查找文件
+        ///     在指定的目录中查找文件
         /// </summary>
         /// <param name="dir">目录</param>
         /// <param name="fileName">文件名</param>
         /// <returns></returns>
-        public  bool FindFile(string dir, string fileName)
+        public bool FindFile(string dir, string fileName)
         {
             if (dir == null || dir.Trim() == "" || fileName == null || fileName.Trim() == "" || !Directory.Exists(dir))
             {
                 return false;
             }
 
-            DirectoryInfo dirInfo = new DirectoryInfo(dir);
+            var dirInfo = new DirectoryInfo(dir);
             return FindFile(dirInfo, fileName);
-
         }
 
-        public  bool FindFile(DirectoryInfo dir, string fileName)
+        public bool FindFile(DirectoryInfo dir, string fileName)
         {
-            foreach (DirectoryInfo d in dir.GetDirectories())
+            foreach (var d in dir.GetDirectories())
             {
                 if (File.Exists(d.FullName + "\\" + fileName))
                 {

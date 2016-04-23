@@ -1,89 +1,80 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
-using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Threading;
-
-
+using System.Windows.Forms;
 
 namespace BaseClass.FileEditor
 {
     /// <summary>
-    /// Detect Flash Device
-    /// Copy the class Contents into your MainForm!
+    ///     Detect Flash Device
+    ///     Copy the class Contents into your MainForm!
     /// </summary>
-    public class UDiskMonitor:Form
+    public class UDiskMonitor : Form
     {
-        bool isInsert = false;
-        String UsbName;
-        public const int WM_DEVICECHANGE = 0x219;
-        public const int DBT_DEVICEARRIVAL = 0x8000;
-        public const int DBT_CONFIGCHANGECANCELED = 0x0019;
-        public const int DBT_CONFIGCHANGED = 0x0018;
-        public const int DBT_CUSTOMEVENT = 0x8006;
-        public const int DBT_DEVICEQUERYREMOVE = 0x8001;
-        public const int DBT_DEVICEQUERYREMOVEFAILED = 0x8002;
-        public const int DBT_DEVICEREMOVECOMPLETE = 0x8004;
-        public const int DBT_DEVICEREMOVEPENDING = 0x8003;
-        public const int DBT_DEVICETYPESPECIFIC = 0x8005;
-        public const int DBT_DEVNODES_CHANGED = 0x0007;
-        public const int DBT_QUERYCHANGECONFIG = 0x0017;
-        public const int DBT_USERDEFINED = 0xFFFF;
+        public const int WmDevicechange = 0x219;
+        public const int DbtDevicearrival = 0x8000;
+        public const int DbtConfigchangecanceled = 0x0019;
+        public const int DbtConfigchanged = 0x0018;
+        public const int DbtCustomevent = 0x8006;
+        public const int DbtDevicequeryremove = 0x8001;
+        public const int DbtDevicequeryremovefailed = 0x8002;
+        public const int DbtDeviceremovecomplete = 0x8004;
+        public const int DbtDeviceremovepending = 0x8003;
+        public const int DbtDevicetypespecific = 0x8005;
+        public const int DbtDevnodesChanged = 0x0007;
+        public const int DbtQuerychangeconfig = 0x0017;
+        public const int DbtUserdefined = 0xFFFF;
+        private bool _isInsert;
+        private string _usbName;
 
         protected override void WndProc(ref Message m)
         {
             try
             {
-                if (m.Msg == WM_DEVICECHANGE)
+                if (m.Msg == WmDevicechange)
                 {
                     switch (m.WParam.ToInt32())
                     {
-                        case WM_DEVICECHANGE:
+                        case WmDevicechange:
                             break;
-                        case DBT_DEVICEARRIVAL://U盘插入
-                            DriveInfo[] s = DriveInfo.GetDrives();
-                            foreach (DriveInfo drive in s)
+                        case DbtDevicearrival: //U盘插入
+                            var s = DriveInfo.GetDrives();
+                            foreach (var drive in s)
                             {
                                 if (drive.DriveType == DriveType.Removable)
                                 {
-                                    Trace.WriteLine((DateTime.Now.ToString() + "--> U盘已插入，盘符为:" + drive.Name.ToString()));
-                                    UsbName = drive.Name;
-                                    isInsert = true;
+                                    Trace.WriteLine(DateTime.Now + "--> U盘已插入，盘符为:" + drive.Name);
+                                    _usbName = drive.Name;
+                                    _isInsert = true;
                                     Thread.Sleep(1000);
                                     break;
                                 }
                             }
                             break;
-                        case DBT_CONFIGCHANGECANCELED:
+                        case DbtConfigchangecanceled:
                             break;
-                        case DBT_CONFIGCHANGED:
+                        case DbtConfigchanged:
                             break;
-                        case DBT_CUSTOMEVENT:
+                        case DbtCustomevent:
                             break;
-                        case DBT_DEVICEQUERYREMOVE:
+                        case DbtDevicequeryremove:
                             break;
-                        case DBT_DEVICEQUERYREMOVEFAILED:
+                        case DbtDevicequeryremovefailed:
                             break;
-                        case DBT_DEVICEREMOVECOMPLETE: //U盘卸载
-                            Trace.WriteLine(DateTime.Now.ToString() + "--> U盘已卸载！");
-                            isInsert = false;
+                        case DbtDeviceremovecomplete: //U盘卸载
+                            Trace.WriteLine(DateTime.Now + "--> U盘已卸载！");
+                            _isInsert = false;
                             break;
-                        case DBT_DEVICEREMOVEPENDING:
+                        case DbtDeviceremovepending:
                             break;
-                        case DBT_DEVICETYPESPECIFIC:
+                        case DbtDevicetypespecific:
                             break;
-                        case DBT_DEVNODES_CHANGED:
+                        case DbtDevnodesChanged:
                             break;
-                        case DBT_QUERYCHANGECONFIG:
+                        case DbtQuerychangeconfig:
                             break;
-                        case DBT_USERDEFINED:
+                        case DbtUserdefined:
                             break;
                         default:
                             break;
@@ -97,6 +88,4 @@ namespace BaseClass.FileEditor
             base.WndProc(ref m);
         }
     }
-
-
 }
