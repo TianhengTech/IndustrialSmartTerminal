@@ -9,16 +9,16 @@ using System.Web;
 namespace BaseClass.TerminalUltility
 
 {
-    public class TerminalLocalDataStorage:SQLiteManagerBase
+     class TerminalLocalDataStorage:SQLiteManagerBase
     {
         //数据库连接字符串(web.config来配置)，可以动态更改SQLString支持多数据库.        
-        public static string connectionString;
+        public  string connectionString;
 
         public TerminalLocalDataStorage(string Localpath) { connectionString = "Data Source="+Localpath; }
 
         #region 公用方法
 
-        public static int GetMaxID(string FieldName, string TableName)
+        public  int GetMaxID(string FieldName, string TableName)
         {
             string strsql = "select max(" + FieldName + ")+1 from " + TableName;
             object obj = GetSingle(strsql);
@@ -32,7 +32,7 @@ namespace BaseClass.TerminalUltility
             }
         }
 
-        public static bool Exists(string strSql)
+        public  bool Exists(string strSql)
         {
             object obj = GetSingle(strSql);
             int cmdresult;
@@ -54,7 +54,7 @@ namespace BaseClass.TerminalUltility
             }
         }
 
-        public static bool Exists(string strSql, params SQLiteParameter[] cmdParms)
+        public  bool Exists(string strSql, params SQLiteParameter[] cmdParms)
         {
             object obj = GetSingle(strSql, cmdParms);
             int cmdresult;
@@ -85,7 +85,7 @@ namespace BaseClass.TerminalUltility
         /// </summary>
         /// <param name="SQLString">SQL语句</param>
         /// <returns>影响的记录数</returns>
-        public static int ExecuteSql(string SQLString)
+        public override int ExecuteSql(string SQLString)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -112,7 +112,7 @@ namespace BaseClass.TerminalUltility
         /// <param name="SQLString"></param>
         /// <param name="Times"></param>
         /// <returns></returns>
-        public static int ExecuteSqlByTime(string SQLString, int Times)
+        public  int ExecuteSqlByTime(string SQLString, int Times)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -138,7 +138,7 @@ namespace BaseClass.TerminalUltility
         /// 执行多条SQL语句，实现数据库事务。
         /// </summary>
         /// <param name="SQLStringList">多条SQL语句</param>        
-        public static void ExecuteSqlTran(ArrayList SQLStringList)
+        public  void ExecuteSqlTran(ArrayList SQLStringList)
         {
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
@@ -174,7 +174,7 @@ namespace BaseClass.TerminalUltility
         /// <param name="SQLString">SQL语句</param>
         /// <param name="content">参数内容,比如一个字段是格式复杂的文章，有特殊符号，可以通过这个方式添加</param>
         /// <returns>影响的记录数</returns>
-        public static int ExecuteSql(string SQLString, string content)
+        public  int ExecuteSql(string SQLString, string content)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -206,7 +206,7 @@ namespace BaseClass.TerminalUltility
         /// <param name="SQLString">SQL语句</param>
         /// <param name="content">参数内容,比如一个字段是格式复杂的文章，有特殊符号，可以通过这个方式添加</param>
         /// <returns>影响的记录数</returns>
-        public static object ExecuteSqlGet(string SQLString, string content)
+        public  object ExecuteSqlGet(string SQLString, string content)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -245,7 +245,7 @@ namespace BaseClass.TerminalUltility
         /// <param name="strSQL">SQL语句</param>
         /// <param name="fs">图像字节,数据库的字段类型为image的情况</param>
         /// <returns>影响的记录数</returns>
-        public static int ExecuteSqlInsertImg(string strSQL, byte[] fs)
+        public  int ExecuteSqlInsertImg(string strSQL, byte[] fs)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -276,7 +276,7 @@ namespace BaseClass.TerminalUltility
         /// </summary>
         /// <param name="SQLString">计算查询结果语句</param>
         /// <returns>查询结果（object）</returns>
-        public static object GetSingle(string SQLString)
+        public  object GetSingle(string SQLString)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -309,7 +309,7 @@ namespace BaseClass.TerminalUltility
         /// </summary>
         /// <param name="strSQL">查询语句</param>
         /// <returns>SQLiteDataReader</returns>
-        public static SQLiteDataReader ExecuteReader(string strSQL)
+        public  SQLiteDataReader ExecuteReader(string strSQL)
         {
             SQLiteConnection connection = new SQLiteConnection(connectionString);
             SQLiteCommand cmd = new SQLiteCommand(strSQL, connection);
@@ -335,7 +335,7 @@ namespace BaseClass.TerminalUltility
         /// </summary>
         /// <param name="SQLString">查询语句</param>
         /// <returns>DataSet</returns>
-        public static DataSet Query(string SQLString)
+        public   DataSet Query(string SQLString)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -354,7 +354,7 @@ namespace BaseClass.TerminalUltility
             }
         }
 
-        public static DataSet Query(string SQLString, string TableName)
+        public override DataSet Query(string SQLString, string TableName)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -379,7 +379,7 @@ namespace BaseClass.TerminalUltility
         /// <param name="SQLString"></param>
         /// <param name="Times"></param>
         /// <returns></returns>
-        public static DataSet Query(string SQLString, int Times)
+        public  DataSet Query(string SQLString, int Times)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -408,7 +408,7 @@ namespace BaseClass.TerminalUltility
         /// </summary>
         /// <param name="SQLString">SQL语句</param>
         /// <returns>影响的记录数</returns>
-        public static int ExecuteSql(string SQLString, params SQLiteParameter[] cmdParms)
+        public  int ExecuteSql(string SQLString, params SQLiteParameter[] cmdParms)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -433,7 +433,7 @@ namespace BaseClass.TerminalUltility
         /// 执行多条SQL语句，实现数据库事务。
         /// </summary>
         /// <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的SQLiteParameter[]）</param>
-        public static void ExecuteSqlTran(Hashtable SQLStringList)
+        public  void ExecuteSqlTran(Hashtable SQLStringList)
         {
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
@@ -469,7 +469,7 @@ namespace BaseClass.TerminalUltility
         /// </summary>
         /// <param name="SQLString">计算查询结果语句</param>
         /// <returns>查询结果（object）</returns>
-        public static object GetSingle(string SQLString, params SQLiteParameter[] cmdParms)
+        public  object GetSingle(string SQLString, params SQLiteParameter[] cmdParms)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -502,7 +502,7 @@ namespace BaseClass.TerminalUltility
         /// </summary>
         /// <param name="strSQL">查询语句</param>
         /// <returns>SQLiteDataReader</returns>
-        public static SQLiteDataReader ExecuteReader(string SQLString, params SQLiteParameter[] cmdParms)
+        public  SQLiteDataReader ExecuteReader(string SQLString, params SQLiteParameter[] cmdParms)
         {
             SQLiteConnection connection = new SQLiteConnection(connectionString);
             SQLiteCommand cmd = new SQLiteCommand();
@@ -530,7 +530,7 @@ namespace BaseClass.TerminalUltility
         /// </summary>
         /// <param name="SQLString">查询语句</param>
         /// <returns>DataSet</returns>
-        public static DataSet Query(string SQLString, params SQLiteParameter[] cmdParms)
+        public override DataSet Query(string SQLString, params SQLiteParameter[] cmdParms)
         {
             using (SQLiteConnection connection = new SQLiteConnection(connectionString))
             {
@@ -553,7 +553,7 @@ namespace BaseClass.TerminalUltility
             }
         }
 
-        public static void PrepareCommand(SQLiteCommand cmd, SQLiteConnection conn, SQLiteTransaction trans, string cmdText, SQLiteParameter[] cmdParms)
+        public  void PrepareCommand(SQLiteCommand cmd, SQLiteConnection conn, SQLiteTransaction trans, string cmdText, SQLiteParameter[] cmdParms)
         {
             if (conn.State != ConnectionState.Open)
                 conn.Open();
@@ -589,14 +589,14 @@ namespace BaseClass.TerminalUltility
         /// <param name="size">参数大小</param>
         /// <param name="value">参数值</param>
         /// <returns>SQLiteParameter的值</returns>
-        public static SQLiteParameter MakeSQLiteParameter(string name, DbType type, int size, object value)
+        public override SQLiteParameter MakeSQLiteParameter(string name, DbType type, int size, object value)
         {
             SQLiteParameter parm = new SQLiteParameter(name, type, size);
             parm.Value = value;
             return parm;
         }
 
-        public static SQLiteParameter MakeSQLiteParameter(string name, DbType type, object value)
+        public  SQLiteParameter MakeSQLiteParameter(string name, DbType type, object value)
         {
             SQLiteParameter parm = new SQLiteParameter(name, type);
             parm.Value = value;
