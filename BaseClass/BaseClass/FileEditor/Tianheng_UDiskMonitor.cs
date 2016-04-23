@@ -13,10 +13,11 @@ using System.Threading;
 
 
 
-namespace prototype_1
+namespace BaseClass.FileEditor
 {
     /// <summary>
     /// Detect Flash Device
+    /// Copy the class Contents into your MainForm!
     /// </summary>
     public class UDiskMonitor:Form
     {
