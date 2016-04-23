@@ -8,7 +8,6 @@ namespace BaseClass.FileEditor
 {
     abstract class ConfigFileBase
     {
-
         public virtual bool INIWriteItems(string iniFile, string section, string items)
         {
             return true;

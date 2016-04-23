@@ -5,7 +5,6 @@ using System.Text;
 
 namespace BaseClass.TerminalUltility
 {
-{
     //定义PLC数据格式
     class PlcCommand
     {

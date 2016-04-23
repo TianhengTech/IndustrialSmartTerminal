@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BaseClass.Communication
 {
-    class Tianheng_Serial:SerialBase
+    class TianhengSerial:SerialBase
     {
 
         SerialPort serialport;
@@ -17,7 +17,7 @@ namespace BaseClass.Communication
         StopBits stopbits;
         Parity parity;
 
-        public Tianheng_Serial(string PortName, int BaudRate, int DataBits = 8, StopBits stopBits = StopBits.One, Parity pArity = Parity.None)
+        public TianhengSerial(string PortName, int BaudRate, int DataBits = 8, StopBits stopBits = StopBits.One, Parity pArity = Parity.None)
         {
             databits =DataBits;
             portname = PortName;
@@ -25,7 +25,7 @@ namespace BaseClass.Communication
             stopbits = stopBits;
             parity = pArity;
         }
-        ~Tianheng_Serial()
+        ~TianhengSerial()
         {
             if(serialport!=null)
             {

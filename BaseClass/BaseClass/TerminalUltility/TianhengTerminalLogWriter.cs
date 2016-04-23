@@ -5,7 +5,6 @@ using System.Text;
 
 namespace BaseClass.TerminalUltility
 {
-{
     class TerminalLogWriter
     {
 

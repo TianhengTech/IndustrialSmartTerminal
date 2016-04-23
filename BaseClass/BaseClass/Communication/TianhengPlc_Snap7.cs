@@ -8,12 +8,12 @@ using System.Runtime.InteropServices;
 
 namespace BaseClass.Communication
 {
-    class Tianheng_Plc_Snap7:ProfinetCommunicationBase
+    class TianhengPlc_Snap7:ProfinetCommunicationBase
     {
 
         S7Client Client=new S7Client();
         
-        ~Tianheng_Plc_Snap7()
+        ~TianhengPlc_Snap7()
         {
             Client.Disconnect();
             

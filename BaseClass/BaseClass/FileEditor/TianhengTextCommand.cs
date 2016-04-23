@@ -6,7 +6,7 @@ using System.IO;
 
 namespace BaseClass.FileEditor
 {
-    class Tianheng_TextCommand : TextManagerBase
+    class TianhengTextCommand : TextManagerBase
     {
         /// <summary>
         /// 判断文件是否存在

@@ -7,7 +7,6 @@ using System.Collections.Concurrent;
 
 namespace BaseClass.TerminalUltility
 {
-{
     class TerminalQueues
     {
         //Queues Listed here

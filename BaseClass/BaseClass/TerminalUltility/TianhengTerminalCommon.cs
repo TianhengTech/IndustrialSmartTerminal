@@ -6,7 +6,6 @@ using System.Net;
 
 namespace BaseClass.TerminalUltility
 {
-{
     class TerminalCommon
     {
         /*
@@ -37,7 +36,7 @@ namespace BaseClass.TerminalUltility
         public static string S7200DataBit = "bit";
         public static string S7200DataWord = "word";
         public static string S7200DataDword = "dword";
-
+        //Your Dictionaries go here
         public static Dictionary<string, string> realtime_gui = new Dictionary<string, string>();
         public static Dictionary<string, string> warn_info = new Dictionary<string, string>();
 

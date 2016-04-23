@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BaseClass.TerminalUltility
 {
-    class SQLiteManagerBase
+    abstract class SQLiteManagerBase
     {
         public SQLiteManagerBase()
         {

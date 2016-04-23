@@ -57,9 +57,10 @@ namespace BaseClass.Communication
             set;
             get;
         }
-        public virtual int WriteOut
+        public virtual int WriteTimeOut
         {
             set;get;
         }
+
     }
 }

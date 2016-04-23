@@ -13,7 +13,7 @@ using System.Net.Sockets;
 
 namespace BaseClass.Communication
 {
-    class Tianheng_ModbusObject:ModbusIOBase
+    class TianhengModbusObject:ModbusIOBase
     {
         private SerialPort port;
         public TcpClient tcpClient;
@@ -24,7 +24,7 @@ namespace BaseClass.Communication
         /// <summary>
         /// Modbus TCP/RTU class
         /// </summary>
-        public Tianheng_ModbusObject()
+        public TianhengModbusObject()
         {
         }
         /// <summary>
@@ -193,7 +193,7 @@ namespace BaseClass.Communication
         /// <summary>
         /// Write timeout in milliseconds
         /// </summary>
-        public override int WriteOut
+        public override int WriteTimeOut
         {
             get
             {
@@ -204,6 +204,7 @@ namespace BaseClass.Communication
                 Master.Transport.WriteTimeout = value;
             }
         }
+
        /// <summary>
        /// Number of times to retry sending a message after encountering an faliure
        /// </summary>
