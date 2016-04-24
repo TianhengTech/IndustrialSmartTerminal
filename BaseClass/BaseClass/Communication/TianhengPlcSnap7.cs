@@ -6,114 +6,6 @@ namespace BaseClass.Communication
     internal class TianhengPlcSnap7 : ProfinetCommunicationBase
     {
         private readonly S7Client Client = new S7Client();
-
-        ~TianhengPlcSnap7()
-        {
-            Client.Disconnect();
-        }
-
-        public override int ConnectTo(string address, int rack, int slot)
-        {
-            return Client.ConnectTo(address, rack, slot);
-        }
-
-        public override int ConnectTo_200(string address, ushort localTsap, ushort remoteTsap)
-        {
-            Client.SetConnectionParams(address, localTsap, remoteTsap);
-            return Connect();
-        }
-
-        public override int PlcStop()
-        {
-            return Client.PlcStop();
-        }
-
-        public override bool IsConneted()
-        {
-            return Client.Connected();
-        }
-
-        public override int Read(int area, int start, int amount, int wordLen, byte[] buffer)
-        {
-            return Client.ReadArea(area, 0, start, amount, wordLen, buffer);
-        }
-
-        public override int ReadDb(int area, int dBnumber, int start, int amount, int wordLen, byte[] buffer)
-        {
-            return Client.ReadArea(area, dBnumber, start, amount, wordLen, buffer);
-        }
-
-        public override int Write(int area, int start, int amount, int wordLen, byte[] buffer)
-        {
-            return Client.WriteArea(area, 0, start, amount, wordLen, buffer);
-        }
-
-        public override int WriteDb(int area, int dBnumber, int start, int amount, int wordLen, byte[] buffer)
-        {
-            return Client.WriteArea(area, dBnumber, start, amount, wordLen, buffer);
-        }
-
-        public override int PlcHotStart()
-        {
-            return Client.PlcHotStart();
-        }
-
-        public override int PlcColdStart()
-        {
-            return Client.PlcColdStart();
-        }
-
-        public override string PlCstatus()
-        {
-            var status = 0;
-            Client.PlcGetStatus(ref status);
-            if (status == 4)
-            {
-                return "PLC Stop";
-            }
-            if (status == 8)
-            {
-                return "PLC Run";
-            }
-            return "Status Unknown";
-        }
-
-        public override DateTime GetPlctime()
-        {
-            var time = Convert.ToDateTime("0000-00-00");
-            var i = Client.GetPlcDateTime(ref time);
-            if (i == 0)
-            {
-                return time;
-            }
-            throw new Exception("Unable to get DateTime,Error code" + i);
-        }
-
-        public override int SetPlctime(DateTime time)
-        {
-            return Client.SetPlcDateTime(time);
-        }
-
-        public override int ReadMultiVars(S7Client.S7DataItem[] itemlist, int itemcount)
-        {
-            return Client.ReadMultiVars(itemlist, itemcount);
-        }
-
-        public override int WriteMultiVars(S7Client.S7DataItem[] itemlist, int itemcount)
-        {
-            return Client.WriteMultiVars(itemlist, itemcount);
-        }
-
-        public override int Connect()
-        {
-            return Client.Connect();
-        }
-
-        public override int Disconnect()
-        {
-            return Client.Disconnect();
-        }
-
         #region [Constants, private vars and TypeDefs]
 
         private const int MsgTextLen = 1024;
@@ -213,5 +105,198 @@ namespace BaseClass.Communication
         private const int JobPending = 1;
 
         #endregion
+
+        ~TianhengPlcSnap7()
+        {
+            Client.Disconnect();
+        }
+        /// <summary>
+        /// Connect to PLC
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="rack"></param>
+        /// <param name="slot"></param>
+        /// <returns></returns>
+        public override int ConnectTo(string address, int rack, int slot)
+        {
+            return Client.ConnectTo(address, rack, slot);
+        }
+        /// <summary>
+        /// Connect to S7-200+CP243 with TSAP setting
+        /// </summary>
+        /// <param name="address"></param>
+        /// <param name="localTsap"></param>
+        /// <param name="remoteTsap"></param>
+        /// <returns></returns>
+        public override int ConnectTo_200(string address, ushort localTsap, ushort remoteTsap)
+        {
+            Client.SetConnectionParams(address, localTsap, remoteTsap);
+            return Connect();
+        }
+        /// <summary>
+        /// Set PLC status to stop
+        /// </summary>
+        /// <returns></returns>
+        public override int PlcStop()
+        {
+            return Client.PlcStop();
+        }
+        /// <summary>
+        /// If the connection is established
+        /// </summary>
+        /// <returns></returns>
+        public override bool IsConneted()
+        {
+            return Client.Connected();
+        }
+        /// <summary>
+        /// Read non-DB area
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="start"></param>
+        /// <param name="amount"></param>
+        /// <param name="wordLen"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public override int Read(int area, int start, int amount, int wordLen, byte[] buffer)
+        {
+            return Client.ReadArea(area, 0, start, amount, wordLen, buffer);
+        }
+        /// <summary>
+        /// Read DB
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="dBnumber"></param>
+        /// <param name="start"></param>
+        /// <param name="amount"></param>
+        /// <param name="wordLen"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public override int ReadDb(int area, int dBnumber, int start, int amount, int wordLen, byte[] buffer)
+        {
+            return Client.ReadArea(area, dBnumber, start, amount, wordLen, buffer);
+        }
+        /// <summary>
+        /// Write non-DB area
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="start"></param>
+        /// <param name="amount"></param>
+        /// <param name="wordLen"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public override int Write(int area, int start, int amount, int wordLen, byte[] buffer)
+        {
+            return Client.WriteArea(area, 0, start, amount, wordLen, buffer);
+        }
+        /// <summary>
+        /// Write DB area
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="dBnumber"></param>
+        /// <param name="start"></param>
+        /// <param name="amount"></param>
+        /// <param name="wordLen"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public override int WriteDb(int area, int dBnumber, int start, int amount, int wordLen, byte[] buffer)
+        {
+            return Client.WriteArea(area, dBnumber, start, amount, wordLen, buffer);
+        }
+        /// <summary>
+        /// Hot Start
+        /// </summary>
+        /// <returns></returns>
+        public override int PlcHotStart()
+        {
+            return Client.PlcHotStart();
+        }
+        /// <summary>
+        /// Cold Start
+        /// </summary>
+        /// <returns></returns>
+        public override int PlcColdStart()
+        {
+            return Client.PlcColdStart();
+        }
+        /// <summary>
+        /// Return PLC status
+        /// </summary>
+        /// <returns></returns>
+        public override string PlCstatus()
+        {
+            var status = 0;
+            Client.PlcGetStatus(ref status);
+            if (status == 4)
+            {
+                return "PLC Stop";
+            }
+            if (status == 8)
+            {
+                return "PLC Run";
+            }
+            return "Status Unknown";
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override DateTime GetPlctime()
+        {
+            var time = Convert.ToDateTime("0000-00-00");
+            var i = Client.GetPlcDateTime(ref time);
+            if (i == 0)
+            {
+                return time;
+            }
+            throw new Exception("Unable to get DateTime,Error code" + i);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public override int SetPlctime(DateTime time)
+        {
+            return Client.SetPlcDateTime(time);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemlist"></param>
+        /// <param name="itemcount"></param>
+        /// <returns></returns>
+        public override int ReadMultiVars(S7Client.S7DataItem[] itemlist, int itemcount)
+        {
+            return Client.ReadMultiVars(itemlist, itemcount);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemlist"></param>
+        /// <param name="itemcount"></param>
+        /// <returns></returns>
+        public override int WriteMultiVars(S7Client.S7DataItem[] itemlist, int itemcount)
+        {
+            return Client.WriteMultiVars(itemlist, itemcount);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int Connect()
+        {
+            return Client.Connect();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int Disconnect()
+        {
+            return Client.Disconnect();
+        }
+
+        
     }
 }

@@ -36,26 +36,30 @@ namespace BaseClass.Communication
         /// <param name="parity"></param>
         protected override void ModbusRtuInit(string portName, int baudrate = 115200, Parity parity = Parity.None)
         {
-            port = new SerialPort();
-            port.BaudRate = baudrate;
-            port.DataBits = 8;
-            port.Parity = parity;
-            port.StopBits = StopBits.One;
-            port.PortName = portName;
+            port = new SerialPort
+            {
+                BaudRate = baudrate,
+                DataBits = 8,
+                Parity = parity,
+                StopBits = StopBits.One,
+                PortName = portName
+            };
 
         }
         /// <summary>
         /// Create&amp;Return a Rtu Master host;
         /// </summary>
         /// <returns></returns>
-        public override IModbusMaster CreateRtuMaster(string portName, int baudrate = 115200,int DataBits=8,StopBits stopbits=StopBits.One, Parity parity = Parity.None)
+        public override IModbusMaster CreateRtuMaster(string portName, int baudrate = 115200,int dataBits=8,StopBits stopbits=StopBits.One, Parity parity = Parity.None)
         {
-            port = new SerialPort();
-            port.BaudRate = baudrate;
-            port.DataBits = 8;
-            port.Parity = parity;
-            port.StopBits = StopBits.One;
-            port.PortName = portName;
+            port = new SerialPort
+            {
+                BaudRate = baudrate,
+                DataBits = 8,
+                Parity = parity,
+                StopBits = StopBits.One,
+                PortName = portName
+            };
             port.Open();
 
             Master = ModbusSerialMaster.CreateRtu(port);
@@ -208,7 +212,7 @@ namespace BaseClass.Communication
        /// <summary>
        /// Number of times to retry sending a message after encountering an faliure
        /// </summary>
-        public override int retries
+        public override int Retries
         {
             get
             {
