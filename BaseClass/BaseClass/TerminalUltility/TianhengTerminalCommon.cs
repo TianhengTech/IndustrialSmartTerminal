@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Net;
 
 namespace BaseClass.TerminalUltility
 {
-    class TerminalCommon
+    internal class TerminalCommon
     {
         /*
         S7-200
@@ -45,9 +42,9 @@ namespace BaseClass.TerminalUltility
         public static string GetInternalIP()
         {
             IPHostEntry host;
-            string localIP = "?";
+            var localIP = "?";
             host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
+            foreach (var ip in host.AddressList)
             {
                 if (ip.AddressFamily.ToString() == "InterNetwork")
                 {
@@ -57,6 +54,5 @@ namespace BaseClass.TerminalUltility
             }
             return localIP;
         }
-
     }
 }

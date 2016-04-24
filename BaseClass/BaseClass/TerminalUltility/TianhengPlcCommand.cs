@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace BaseClass.TerminalUltility
+﻿namespace BaseClass.TerminalUltility
 {
     //定义PLC数据格式
-    class PlcCommand
+    internal class PlcCommand
     {
         /*
         S7-200
@@ -21,67 +16,19 @@ namespace BaseClass.TerminalUltility
         S7S.Get_Cpu_State() 只适用于S7-1200
         */
         private string _area;
-        public string area
-        {
-            get 
-            {
-                return this._area;
-            }
-            set
-            {
-                if (value == TerminalCommon.S7200AreaS || value == TerminalCommon.S7200AreaSM || value == TerminalCommon.S7200AreaAI
-                 || value == TerminalCommon.S7200AreaAQ || value == TerminalCommon.S7200AreaC || value == TerminalCommon.S7200AreaI
-                 || value == TerminalCommon.S7200AreaQ || value == TerminalCommon.S7200AreaM || value == TerminalCommon.S7200AreaV
-                 || value == TerminalCommon.S7200AreaT)
-                {
-                    this._area = value;
-                }
-                else
-                {
-                    this._area = "null";
-                }
-            }
-        }
-        private string _type;
-        public string type
-        {
-            get
-            {
-                return this._type;
-            }
-            set
-            {
-                if (value == TerminalCommon.S7200DataByte || value == TerminalCommon.S7200DataBit || value == TerminalCommon.S7200DataWord)
-                {
-                    this._type = value;
-                }
-            }
-        }
-        public int data;
-        public int addr;
         private int _bitaddr;
-        public int bitaddr
-        {
-            get
-            {
-                return _bitaddr;
-            }
-            set
-            {
-                if (value >= 0 && value <= 7)
-                {
-                    _bitaddr = value;
-                }
-            }
-        }
-/// <summary>
-/// Creat a PLC command
-/// </summary>
-/// <param name="input_area"></param>
-/// <param name="input_type"></param>
-/// <param name="input_data"></param>
-/// <param name="input_addr"></param>
-/// <param name="input_bitaddr"></param>
+        private string _type;
+        public int addr;
+        public int data;
+
+        /// <summary>
+        ///     Creat a PLC command
+        /// </summary>
+        /// <param name="input_area"></param>
+        /// <param name="input_type"></param>
+        /// <param name="input_data"></param>
+        /// <param name="input_addr"></param>
+        /// <param name="input_bitaddr"></param>
         public PlcCommand(string input_area, string input_type, int input_data, int input_addr, int input_bitaddr = 0)
         {
             area = input_area;
@@ -89,6 +36,53 @@ namespace BaseClass.TerminalUltility
             data = input_data;
             addr = input_addr;
             bitaddr = input_bitaddr;
+        }
+
+        public string area
+        {
+            get { return _area; }
+            set
+            {
+                if (value == TerminalCommon.S7200AreaS || value == TerminalCommon.S7200AreaSM ||
+                    value == TerminalCommon.S7200AreaAI
+                    || value == TerminalCommon.S7200AreaAQ || value == TerminalCommon.S7200AreaC ||
+                    value == TerminalCommon.S7200AreaI
+                    || value == TerminalCommon.S7200AreaQ || value == TerminalCommon.S7200AreaM ||
+                    value == TerminalCommon.S7200AreaV
+                    || value == TerminalCommon.S7200AreaT)
+                {
+                    _area = value;
+                }
+                else
+                {
+                    _area = "null";
+                }
+            }
+        }
+
+        public string type
+        {
+            get { return _type; }
+            set
+            {
+                if (value == TerminalCommon.S7200DataByte || value == TerminalCommon.S7200DataBit ||
+                    value == TerminalCommon.S7200DataWord)
+                {
+                    _type = value;
+                }
+            }
+        }
+
+        public int bitaddr
+        {
+            get { return _bitaddr; }
+            set
+            {
+                if (value >= 0 && value <= 7)
+                {
+                    _bitaddr = value;
+                }
+            }
         }
     }
 }

@@ -1,27 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace BaseClass.TerminalUltility
 {
-    class TerminalQueues
+    internal class TerminalQueues
     {
         //Queues Listed here
-        public static ConcurrentQueue<PlcCommand> plccommandqueue = new ConcurrentQueue<PlcCommand>();  //plc通信队列
-        public static ConcurrentQueue<PlcDAQCommunicationObject> plcdataprocessqueue = new ConcurrentQueue<PlcDAQCommunicationObject>();    //plc数据处理队列
-        public static ConcurrentQueue<PlcDAQCommunicationObject> localdataqueue = new ConcurrentQueue<PlcDAQCommunicationObject>();//本地数据处理队列
-        public static ConcurrentQueue<PlcDAQCommunicationObject> datacenterprocessqueue = new ConcurrentQueue<PlcDAQCommunicationObject>();     //云数据处理队列
+        public static ConcurrentQueue<PlcCommand> plccommandqueue = new ConcurrentQueue<PlcCommand>(); //plc通信队列
+
+        public static ConcurrentQueue<PlcDAQCommunicationObject> plcdataprocessqueue =
+            new ConcurrentQueue<PlcDAQCommunicationObject>(); //plc数据处理队列
+
+        public static ConcurrentQueue<PlcDAQCommunicationObject> localdataqueue =
+            new ConcurrentQueue<PlcDAQCommunicationObject>(); //本地数据处理队列
+
+        public static ConcurrentQueue<PlcDAQCommunicationObject> datacenterprocessqueue =
+            new ConcurrentQueue<PlcDAQCommunicationObject>(); //云数据处理队列
+
         public static ConcurrentQueue<PLCWarningObject> warninfoqueue = new ConcurrentQueue<PLCWarningObject>();
         public static ConcurrentQueue<PLCWarningObject> warninfoqueue_local = new ConcurrentQueue<PLCWarningObject>();
     }
+
     public class PLCWarningObject
     {
-        public string warndata;
         public DateTime warn_time;
+        public string warndata;
     }
+
     //==================================================================
     //模块名： PlcDAQCommunicationObject
     //日期：    2015.12.11
@@ -32,8 +38,8 @@ namespace BaseClass.TerminalUltility
     //==================================================================
     public class PlcDAQCommunicationObject
     {
-        public Dictionary<string, int> plc_data;
         public DateTime daq_time;
+        public Dictionary<string, int> plc_data;
 
         public PlcDAQCommunicationObject()
         {

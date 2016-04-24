@@ -1,42 +1,40 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Specialized;
 using System.Data;
-using System.Data.SQLite;//这个可以去网上下载
-using System.Configuration;
-using System.Web;
+using System.Data.SQLite;
+//这个可以去网上下载
 
 namespace BaseClass.TerminalUltility
 
 {
-     class TerminalLocalDataStorage:SQLiteManagerBase
+    internal class TerminalLocalDataStorage : SQLiteManagerBase
     {
         //数据库连接字符串(web.config来配置)，可以动态更改SQLString支持多数据库.        
-        public  string connectionString;
+        public string connectionString;
 
-        public TerminalLocalDataStorage(string Localpath) { connectionString = "Data Source="+Localpath; }
+        public TerminalLocalDataStorage(string Localpath)
+        {
+            connectionString = "Data Source=" + Localpath;
+        }
 
         #region 公用方法
 
-        public  int GetMaxID(string FieldName, string TableName)
+        public int GetMaxID(string FieldName, string TableName)
         {
-            string strsql = "select max(" + FieldName + ")+1 from " + TableName;
-            object obj = GetSingle(strsql);
+            var strsql = "select max(" + FieldName + ")+1 from " + TableName;
+            var obj = GetSingle(strsql);
             if (obj == null)
             {
                 return 1;
             }
-            else
-            {
-                return int.Parse(obj.ToString());
-            }
+            return int.Parse(obj.ToString());
         }
 
-        public  bool Exists(string strSql)
+        public bool Exists(string strSql)
         {
-            object obj = GetSingle(strSql);
+            var obj = GetSingle(strSql);
             int cmdresult;
-            if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+            if (Equals(obj, null) || Equals(obj, DBNull.Value))
             {
                 cmdresult = 0;
             }
@@ -48,17 +46,14 @@ namespace BaseClass.TerminalUltility
             {
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
-        public  bool Exists(string strSql, params SQLiteParameter[] cmdParms)
+        public bool Exists(string strSql, params SQLiteParameter[] cmdParms)
         {
-            object obj = GetSingle(strSql, cmdParms);
+            var obj = GetSingle(strSql, cmdParms);
             int cmdresult;
-            if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+            if (Equals(obj, null) || Equals(obj, DBNull.Value))
             {
                 cmdresult = 0;
             }
@@ -70,10 +65,7 @@ namespace BaseClass.TerminalUltility
             {
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         #endregion
@@ -81,23 +73,23 @@ namespace BaseClass.TerminalUltility
         #region  执行简单SQL语句
 
         /// <summary>
-        /// 执行SQL语句，返回影响的记录数
+        ///     执行SQL语句，返回影响的记录数
         /// </summary>
         /// <param name="SQLString">SQL语句</param>
         /// <returns>影响的记录数</returns>
         public override int ExecuteSql(string SQLString)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                using (SQLiteCommand cmd = new SQLiteCommand(SQLString, connection))
+                using (var cmd = new SQLiteCommand(SQLString, connection))
                 {
                     try
                     {
                         connection.Open();
-                        int rows = cmd.ExecuteNonQuery();
+                        var rows = cmd.ExecuteNonQuery();
                         return rows;
                     }
-                    catch (System.Data.SQLite.SQLiteException E)
+                    catch (SQLiteException E)
                     {
                         connection.Close();
                         throw new Exception(E.Message);
@@ -107,25 +99,25 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行SQL语句，设置命令的执行等待时间
+        ///     执行SQL语句，设置命令的执行等待时间
         /// </summary>
         /// <param name="SQLString"></param>
         /// <param name="Times"></param>
         /// <returns></returns>
-        public  int ExecuteSqlByTime(string SQLString, int Times)
+        public int ExecuteSqlByTime(string SQLString, int Times)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                using (SQLiteCommand cmd = new SQLiteCommand(SQLString, connection))
+                using (var cmd = new SQLiteCommand(SQLString, connection))
                 {
                     try
                     {
                         connection.Open();
                         cmd.CommandTimeout = Times;
-                        int rows = cmd.ExecuteNonQuery();
+                        var rows = cmd.ExecuteNonQuery();
                         return rows;
                     }
-                    catch (System.Data.SQLite.SQLiteException E)
+                    catch (SQLiteException E)
                     {
                         connection.Close();
                         throw new Exception(E.Message);
@@ -135,23 +127,23 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行多条SQL语句，实现数据库事务。
+        ///     执行多条SQL语句，实现数据库事务。
         /// </summary>
-        /// <param name="SQLStringList">多条SQL语句</param>        
-        public  void ExecuteSqlTran(ArrayList SQLStringList)
+        /// <param name="SQLStringList">多条SQL语句</param>
+        public void ExecuteSqlTran(ArrayList SQLStringList)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                SQLiteCommand cmd = new SQLiteCommand();
+                var cmd = new SQLiteCommand();
                 cmd.Connection = conn;
-                SQLiteTransaction tx = conn.BeginTransaction();
+                var tx = conn.BeginTransaction();
                 cmd.Transaction = tx;
                 try
                 {
-                    for (int n = 0; n < SQLStringList.Count; n++)
+                    for (var n = 0; n < SQLStringList.Count; n++)
                     {
-                        string strsql = SQLStringList[n].ToString();
+                        var strsql = SQLStringList[n].ToString();
                         if (strsql.Trim().Length > 1)
                         {
                             cmd.CommandText = strsql;
@@ -160,7 +152,7 @@ namespace BaseClass.TerminalUltility
                     }
                     tx.Commit();
                 }
-                catch (System.Data.SQLite.SQLiteException E)
+                catch (SQLiteException E)
                 {
                     tx.Rollback();
                     throw new Exception(E.Message);
@@ -169,26 +161,26 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行带一个存储过程参数的的SQL语句。
+        ///     执行带一个存储过程参数的的SQL语句。
         /// </summary>
         /// <param name="SQLString">SQL语句</param>
         /// <param name="content">参数内容,比如一个字段是格式复杂的文章，有特殊符号，可以通过这个方式添加</param>
         /// <returns>影响的记录数</returns>
-        public  int ExecuteSql(string SQLString, string content)
+        public int ExecuteSql(string SQLString, string content)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                SQLiteCommand cmd = new SQLiteCommand(SQLString, connection);
-                SQLiteParameter myParameter = new SQLiteParameter("@content", DbType.String);
+                var cmd = new SQLiteCommand(SQLString, connection);
+                var myParameter = new SQLiteParameter("@content", DbType.String);
                 myParameter.Value = content;
                 cmd.Parameters.Add(myParameter);
                 try
                 {
                     connection.Open();
-                    int rows = cmd.ExecuteNonQuery();
+                    var rows = cmd.ExecuteNonQuery();
                     return rows;
                 }
-                catch (System.Data.SQLite.SQLiteException E)
+                catch (SQLiteException E)
                 {
                     throw new Exception(E.Message);
                 }
@@ -201,24 +193,24 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行带一个存储过程参数的的SQL语句。
+        ///     执行带一个存储过程参数的的SQL语句。
         /// </summary>
         /// <param name="SQLString">SQL语句</param>
         /// <param name="content">参数内容,比如一个字段是格式复杂的文章，有特殊符号，可以通过这个方式添加</param>
         /// <returns>影响的记录数</returns>
-        public  object ExecuteSqlGet(string SQLString, string content)
+        public object ExecuteSqlGet(string SQLString, string content)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                SQLiteCommand cmd = new SQLiteCommand(SQLString, connection);
-                SQLiteParameter myParameter = new SQLiteParameter("@content", DbType.String);
+                var cmd = new SQLiteCommand(SQLString, connection);
+                var myParameter = new SQLiteParameter("@content", DbType.String);
                 myParameter.Value = content;
                 cmd.Parameters.Add(myParameter);
                 try
                 {
                     connection.Open();
-                    object obj = cmd.ExecuteScalar();
-                    if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+                    var obj = cmd.ExecuteScalar();
+                    if (Equals(obj, null) || Equals(obj, DBNull.Value))
                     {
                         return null;
                     }
@@ -227,7 +219,7 @@ namespace BaseClass.TerminalUltility
                         return obj;
                     }
                 }
-                catch (System.Data.SQLite.SQLiteException E)
+                catch (SQLiteException E)
                 {
                     throw new Exception(E.Message);
                 }
@@ -240,26 +232,26 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 向数据库里插入图像格式的字段(和上面情况类似的另一种实例)
+        ///     向数据库里插入图像格式的字段(和上面情况类似的另一种实例)
         /// </summary>
         /// <param name="strSQL">SQL语句</param>
         /// <param name="fs">图像字节,数据库的字段类型为image的情况</param>
         /// <returns>影响的记录数</returns>
-        public  int ExecuteSqlInsertImg(string strSQL, byte[] fs)
+        public int ExecuteSqlInsertImg(string strSQL, byte[] fs)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                SQLiteCommand cmd = new SQLiteCommand(strSQL, connection);
-                SQLiteParameter myParameter = new SQLiteParameter("@fs", DbType.Binary);
+                var cmd = new SQLiteCommand(strSQL, connection);
+                var myParameter = new SQLiteParameter("@fs", DbType.Binary);
                 myParameter.Value = fs;
                 cmd.Parameters.Add(myParameter);
                 try
                 {
                     connection.Open();
-                    int rows = cmd.ExecuteNonQuery();
+                    var rows = cmd.ExecuteNonQuery();
                     return rows;
                 }
-                catch (System.Data.SQLite.SQLiteException E)
+                catch (SQLiteException E)
                 {
                     throw new Exception(E.Message);
                 }
@@ -272,30 +264,27 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行一条计算查询结果语句，返回查询结果（object）。
+        ///     执行一条计算查询结果语句，返回查询结果（object）。
         /// </summary>
         /// <param name="SQLString">计算查询结果语句</param>
         /// <returns>查询结果（object）</returns>
-        public  object GetSingle(string SQLString)
+        public object GetSingle(string SQLString)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                using (SQLiteCommand cmd = new SQLiteCommand(SQLString, connection))
+                using (var cmd = new SQLiteCommand(SQLString, connection))
                 {
                     try
                     {
                         connection.Open();
-                        object obj = cmd.ExecuteScalar();
-                        if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+                        var obj = cmd.ExecuteScalar();
+                        if (Equals(obj, null) || Equals(obj, DBNull.Value))
                         {
                             return null;
                         }
-                        else
-                        {
-                            return obj;
-                        }
+                        return obj;
                     }
-                    catch (System.Data.SQLite.SQLiteException e)
+                    catch (SQLiteException e)
                     {
                         connection.Close();
                         throw new Exception(e.Message);
@@ -305,21 +294,21 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行查询语句，返回SQLiteDataReader(使用该方法切记要手工关闭SQLiteDataReader和连接)
+        ///     执行查询语句，返回SQLiteDataReader(使用该方法切记要手工关闭SQLiteDataReader和连接)
         /// </summary>
         /// <param name="strSQL">查询语句</param>
         /// <returns>SQLiteDataReader</returns>
-        public  SQLiteDataReader ExecuteReader(string strSQL)
+        public SQLiteDataReader ExecuteReader(string strSQL)
         {
-            SQLiteConnection connection = new SQLiteConnection(connectionString);
-            SQLiteCommand cmd = new SQLiteCommand(strSQL, connection);
+            var connection = new SQLiteConnection(connectionString);
+            var cmd = new SQLiteCommand(strSQL, connection);
             try
             {
                 connection.Open();
-                SQLiteDataReader myReader = cmd.ExecuteReader();
+                var myReader = cmd.ExecuteReader();
                 return myReader;
             }
-            catch (System.Data.SQLite.SQLiteException e)
+            catch (SQLiteException e)
             {
                 throw new Exception(e.Message);
             }
@@ -331,22 +320,22 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行查询语句，返回DataSet
+        ///     执行查询语句，返回DataSet
         /// </summary>
         /// <param name="SQLString">查询语句</param>
         /// <returns>DataSet</returns>
-        public   DataSet Query(string SQLString)
+        public DataSet Query(string SQLString)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                DataSet ds = new DataSet();
+                var ds = new DataSet();
                 try
                 {
                     connection.Open();
-                    SQLiteDataAdapter command = new SQLiteDataAdapter(SQLString, connection);
+                    var command = new SQLiteDataAdapter(SQLString, connection);
                     command.Fill(ds, "ds");
                 }
-                catch (System.Data.SQLite.SQLiteException ex)
+                catch (SQLiteException ex)
                 {
                     throw new Exception(ex.Message);
                 }
@@ -356,16 +345,16 @@ namespace BaseClass.TerminalUltility
 
         public override DataSet Query(string SQLString, string TableName)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                DataSet ds = new DataSet();
+                var ds = new DataSet();
                 try
                 {
                     connection.Open();
-                    SQLiteDataAdapter command = new SQLiteDataAdapter(SQLString, connection);
+                    var command = new SQLiteDataAdapter(SQLString, connection);
                     command.Fill(ds, TableName);
                 }
-                catch (System.Data.SQLite.SQLiteException ex)
+                catch (SQLiteException ex)
                 {
                     throw new Exception(ex.Message);
                 }
@@ -374,24 +363,24 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行查询语句，返回DataSet,设置命令的执行等待时间
+        ///     执行查询语句，返回DataSet,设置命令的执行等待时间
         /// </summary>
         /// <param name="SQLString"></param>
         /// <param name="Times"></param>
         /// <returns></returns>
-        public  DataSet Query(string SQLString, int Times)
+        public DataSet Query(string SQLString, int Times)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                DataSet ds = new DataSet();
+                var ds = new DataSet();
                 try
                 {
                     connection.Open();
-                    SQLiteDataAdapter command = new SQLiteDataAdapter(SQLString, connection);
+                    var command = new SQLiteDataAdapter(SQLString, connection);
                     command.SelectCommand.CommandTimeout = Times;
                     command.Fill(ds, "ds");
                 }
-                catch (System.Data.SQLite.SQLiteException ex)
+                catch (SQLiteException ex)
                 {
                     throw new Exception(ex.Message);
                 }
@@ -404,24 +393,24 @@ namespace BaseClass.TerminalUltility
         #region 执行带参数的SQL语句
 
         /// <summary>
-        /// 执行SQL语句，返回影响的记录数
+        ///     执行SQL语句，返回影响的记录数
         /// </summary>
         /// <param name="SQLString">SQL语句</param>
         /// <returns>影响的记录数</returns>
-        public  int ExecuteSql(string SQLString, params SQLiteParameter[] cmdParms)
+        public int ExecuteSql(string SQLString, params SQLiteParameter[] cmdParms)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                using (SQLiteCommand cmd = new SQLiteCommand())
+                using (var cmd = new SQLiteCommand())
                 {
                     try
                     {
                         PrepareCommand(cmd, connection, null, SQLString, cmdParms);
-                        int rows = cmd.ExecuteNonQuery();
+                        var rows = cmd.ExecuteNonQuery();
                         cmd.Parameters.Clear();
                         return rows;
                     }
-                    catch (System.Data.SQLite.SQLiteException E)
+                    catch (SQLiteException E)
                     {
                         throw new Exception(E.Message);
                     }
@@ -430,26 +419,26 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行多条SQL语句，实现数据库事务。
+        ///     执行多条SQL语句，实现数据库事务。
         /// </summary>
         /// <param name="SQLStringList">SQL语句的哈希表（key为sql语句，value是该语句的SQLiteParameter[]）</param>
-        public  void ExecuteSqlTran(Hashtable SQLStringList)
+        public void ExecuteSqlTran(Hashtable SQLStringList)
         {
-            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                using (SQLiteTransaction trans = conn.BeginTransaction())
+                using (var trans = conn.BeginTransaction())
                 {
-                    SQLiteCommand cmd = new SQLiteCommand();
+                    var cmd = new SQLiteCommand();
                     try
                     {
                         //循环
                         foreach (DictionaryEntry myDE in SQLStringList)
                         {
-                            string cmdText = myDE.Key.ToString();
-                            SQLiteParameter[] cmdParms = (SQLiteParameter[])myDE.Value;
+                            var cmdText = myDE.Key.ToString();
+                            var cmdParms = (SQLiteParameter[]) myDE.Value;
                             PrepareCommand(cmd, conn, trans, cmdText, cmdParms);
-                            int val = cmd.ExecuteNonQuery();
+                            var val = cmd.ExecuteNonQuery();
                             cmd.Parameters.Clear();
 
                             trans.Commit();
@@ -465,31 +454,28 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行一条计算查询结果语句，返回查询结果（object）。
+        ///     执行一条计算查询结果语句，返回查询结果（object）。
         /// </summary>
         /// <param name="SQLString">计算查询结果语句</param>
         /// <returns>查询结果（object）</returns>
-        public  object GetSingle(string SQLString, params SQLiteParameter[] cmdParms)
+        public object GetSingle(string SQLString, params SQLiteParameter[] cmdParms)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                using (SQLiteCommand cmd = new SQLiteCommand())
+                using (var cmd = new SQLiteCommand())
                 {
                     try
                     {
                         PrepareCommand(cmd, connection, null, SQLString, cmdParms);
-                        object obj = cmd.ExecuteScalar();
+                        var obj = cmd.ExecuteScalar();
                         cmd.Parameters.Clear();
-                        if ((Object.Equals(obj, null)) || (Object.Equals(obj, System.DBNull.Value)))
+                        if (Equals(obj, null) || Equals(obj, DBNull.Value))
                         {
                             return null;
                         }
-                        else
-                        {
-                            return obj;
-                        }
+                        return obj;
                     }
-                    catch (System.Data.SQLite.SQLiteException e)
+                    catch (SQLiteException e)
                     {
                         throw new Exception(e.Message);
                     }
@@ -498,22 +484,22 @@ namespace BaseClass.TerminalUltility
         }
 
         /// <summary>
-        /// 执行查询语句，返回SQLiteDataReader (使用该方法切记要手工关闭SQLiteDataReader和连接)
+        ///     执行查询语句，返回SQLiteDataReader (使用该方法切记要手工关闭SQLiteDataReader和连接)
         /// </summary>
         /// <param name="strSQL">查询语句</param>
         /// <returns>SQLiteDataReader</returns>
-        public  SQLiteDataReader ExecuteReader(string SQLString, params SQLiteParameter[] cmdParms)
+        public SQLiteDataReader ExecuteReader(string SQLString, params SQLiteParameter[] cmdParms)
         {
-            SQLiteConnection connection = new SQLiteConnection(connectionString);
-            SQLiteCommand cmd = new SQLiteCommand();
+            var connection = new SQLiteConnection(connectionString);
+            var cmd = new SQLiteCommand();
             try
             {
                 PrepareCommand(cmd, connection, null, SQLString, cmdParms);
-                SQLiteDataReader myReader = cmd.ExecuteReader();
+                var myReader = cmd.ExecuteReader();
                 cmd.Parameters.Clear();
                 return myReader;
             }
-            catch (System.Data.SQLite.SQLiteException e)
+            catch (SQLiteException e)
             {
                 throw new Exception(e.Message);
             }
@@ -522,29 +508,28 @@ namespace BaseClass.TerminalUltility
             //    cmd.Dispose();
             //    connection.Close();
             //}    
-
         }
 
         /// <summary>
-        /// 执行查询语句，返回DataSet
+        ///     执行查询语句，返回DataSet
         /// </summary>
         /// <param name="SQLString">查询语句</param>
         /// <returns>DataSet</returns>
         public override DataSet Query(string SQLString, params SQLiteParameter[] cmdParms)
         {
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            using (var connection = new SQLiteConnection(connectionString))
             {
-                SQLiteCommand cmd = new SQLiteCommand();
+                var cmd = new SQLiteCommand();
                 PrepareCommand(cmd, connection, null, SQLString, cmdParms);
-                using (SQLiteDataAdapter da = new SQLiteDataAdapter(cmd))
+                using (var da = new SQLiteDataAdapter(cmd))
                 {
-                    DataSet ds = new DataSet();
+                    var ds = new DataSet();
                     try
                     {
                         da.Fill(ds, "ds");
                         cmd.Parameters.Clear();
                     }
-                    catch (System.Data.SQLite.SQLiteException ex)
+                    catch (SQLiteException ex)
                     {
                         throw new Exception(ex.Message);
                     }
@@ -553,7 +538,8 @@ namespace BaseClass.TerminalUltility
             }
         }
 
-        public  void PrepareCommand(SQLiteCommand cmd, SQLiteConnection conn, SQLiteTransaction trans, string cmdText, SQLiteParameter[] cmdParms)
+        public void PrepareCommand(SQLiteCommand cmd, SQLiteConnection conn, SQLiteTransaction trans, string cmdText,
+            SQLiteParameter[] cmdParms)
         {
             if (conn.State != ConnectionState.Open)
                 conn.Open();
@@ -561,14 +547,13 @@ namespace BaseClass.TerminalUltility
             cmd.CommandText = cmdText;
             if (trans != null)
                 cmd.Transaction = trans;
-            cmd.CommandType = CommandType.Text;//cmdType;
+            cmd.CommandType = CommandType.Text; //cmdType;
             if (cmdParms != null)
             {
-
-
-                foreach (SQLiteParameter parameter in cmdParms)
+                foreach (var parameter in cmdParms)
                 {
-                    if ((parameter.Direction == ParameterDirection.InputOutput || parameter.Direction == ParameterDirection.Input) &&
+                    if ((parameter.Direction == ParameterDirection.InputOutput ||
+                         parameter.Direction == ParameterDirection.Input) &&
                         (parameter.Value == null))
                     {
                         parameter.Value = DBNull.Value;
@@ -581,8 +566,9 @@ namespace BaseClass.TerminalUltility
         #endregion
 
         #region 参数转换
+
         /// <summary>
-        /// 放回一个SQLiteParameter
+        ///     放回一个SQLiteParameter
         /// </summary>
         /// <param name="name">参数名字</param>
         /// <param name="type">参数类型</param>
@@ -591,14 +577,14 @@ namespace BaseClass.TerminalUltility
         /// <returns>SQLiteParameter的值</returns>
         public override SQLiteParameter MakeSQLiteParameter(string name, DbType type, int size, object value)
         {
-            SQLiteParameter parm = new SQLiteParameter(name, type, size);
+            var parm = new SQLiteParameter(name, type, size);
             parm.Value = value;
             return parm;
         }
 
-        public  SQLiteParameter MakeSQLiteParameter(string name, DbType type, object value)
+        public SQLiteParameter MakeSQLiteParameter(string name, DbType type, object value)
         {
-            SQLiteParameter parm = new SQLiteParameter(name, type);
+            var parm = new SQLiteParameter(name, type);
             parm.Value = value;
             return parm;
         }
