@@ -5,6 +5,9 @@ namespace BaseClass.TerminalUltility
 {
     internal class TerminalCommon
     {
+        ///Define Your Terminal variable here
+        /// 
+        /// 
         /*
         S7-200
         04-S 05-SM 06-AI 07-AQ 1E-C 81-I 82-Q 83-M 184-V 1F-T

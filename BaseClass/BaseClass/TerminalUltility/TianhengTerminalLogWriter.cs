@@ -8,7 +8,7 @@ namespace BaseClass.TerminalUltility
         /// <summary>
         ///     输出日志到Log4Net
         /// </summary>
-        /// <param name="t"></param>
+        /// <param name="t">Class type</param>
         /// <param name="msg"></param>
         public static void WriteErroLog(Type t, string msg)
         {
