@@ -6,10 +6,10 @@ namespace BaseClass.TerminalUltility
     internal class TerminalLogWriter
     {
         /// <summary>
-        ///     输出日志到Log4Net
+        ///  输出日志到Log4Net
         /// </summary>
         /// <param name="t">Class type</param>
-        /// <param name="msg"></param>
+        /// <param name="msg">log Message</param>
         public static void WriteErroLog(Type t, string msg)
         {
             var log = LogManager.GetLogger(t);

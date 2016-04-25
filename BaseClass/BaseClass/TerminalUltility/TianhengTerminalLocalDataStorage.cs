@@ -18,7 +18,12 @@ namespace BaseClass.TerminalUltility
         }
 
         #region 公用方法
-
+        /// <summary>
+        /// 取得最大行ID
+        /// </summary>
+        /// <param name="FieldName"></param>
+        /// <param name="TableName"></param>
+        /// <returns></returns>
         public int GetMaxID(string FieldName, string TableName)
         {
             var strsql = "select max(" + FieldName + ")+1 from " + TableName;
@@ -29,7 +34,11 @@ namespace BaseClass.TerminalUltility
             }
             return int.Parse(obj.ToString());
         }
-
+        /// <summary>
+        /// 判断查询结果是否存在
+        /// </summary>
+        /// <param name="strSql"></param>
+        /// <returns></returns>
         public bool Exists(string strSql)
         {
             var obj = GetSingle(strSql);
