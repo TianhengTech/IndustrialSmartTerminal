@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartTerminalBase", "BaseClass\SmartTerminalBase.csproj", "{B8C28AA5-92F7-4458-953D-31439E358274}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartTerminalBase", "SmartTerminalBase\SmartTerminalBase.csproj", "{B8C28AA5-92F7-4458-953D-31439E358274}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
