@@ -32,3 +32,6 @@ D:\visual studio 2013\Github\IndustrialSmartTerminal\BaseClass\BaseClass\bin\Deb
 D:\visual studio 2013\Github\IndustrialSmartTerminal\BaseClass\BaseClass\obj\Debug\BaseClass.exe
 D:\visual studio 2013\Github\IndustrialSmartTerminal\BaseClass\BaseClass\obj\Debug\BaseClass.pdb
 D:\visual studio 2013\Github\IndustrialSmartTerminal\BaseClass\BaseClass\obj\Debug\BaseClass.csprojResolveAssemblyReference.cache
+D:\visual studio 2013\Github\IndustrialSmartTerminal\IndustrialSmartTerminalMaster\BaseClass\bin\Debug\BaseClass.exe.config
+D:\visual studio 2013\Github\IndustrialSmartTerminal\IndustrialSmartTerminalMaster\BaseClass\obj\Debug\BaseClass.exe
+D:\visual studio 2013\Github\IndustrialSmartTerminal\IndustrialSmartTerminalMaster\BaseClass\obj\Debug\BaseClass.pdb

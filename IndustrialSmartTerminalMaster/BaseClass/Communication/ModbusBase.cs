@@ -3,7 +3,7 @@ using Modbus.Device;
 
 namespace BaseClass.Communication
 {
-    internal abstract class ModbusIOBase
+    internal abstract class ModbusBase
     {
         public virtual int Retries { set; get; }
 

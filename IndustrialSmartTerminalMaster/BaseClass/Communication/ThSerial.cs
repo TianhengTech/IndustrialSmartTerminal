@@ -2,7 +2,7 @@
 
 namespace BaseClass.Communication
 {
-    internal class TianhengSerial : SerialBase
+    internal class ThSerial : SerialBase
     {
         private readonly int baudrate;
         private readonly int databits;
@@ -19,7 +19,7 @@ namespace BaseClass.Communication
         /// <param name="DataBits"></param>
         /// <param name="stopBits"></param>
         /// <param name="pArity"></param>
-        public TianhengSerial(string PortName, int BaudRate, int DataBits = 8, StopBits stopBits = StopBits.One,
+        public ThSerial(string PortName, int BaudRate, int DataBits = 8, StopBits stopBits = StopBits.One,
             Parity pArity = Parity.None)
         {
             databits = DataBits;
@@ -61,7 +61,7 @@ namespace BaseClass.Communication
             set { serialport.WriteTimeout = value; }
         }
 
-        ~TianhengSerial()
+        ~ThSerial()
         {
             if (serialport != null)
             {

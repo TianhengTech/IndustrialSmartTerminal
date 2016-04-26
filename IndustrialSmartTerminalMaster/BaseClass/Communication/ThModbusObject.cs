@@ -13,7 +13,7 @@ using System.Net.Sockets;
 
 namespace BaseClass.Communication
 {
-    class TianhengModbusObject:ModbusIOBase
+    class ThModbusObject:ModbusBase
     {
         private SerialPort port;
         public TcpClient tcpClient;
@@ -24,7 +24,7 @@ namespace BaseClass.Communication
         /// <summary>
         /// Modbus TCP/RTU class
         /// </summary>
-        public TianhengModbusObject()
+        public ThModbusObject()
         {
         }
         /// <summary>

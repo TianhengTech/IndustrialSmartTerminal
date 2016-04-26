@@ -3,7 +3,7 @@ using Snap7;
 
 namespace BaseClass.Communication
 {
-    internal class TianhengPlcSnap7 : ProfinetCommunicationBase
+    internal class ThPlcSnap7 : ProfinetCommunicationBase
     {
         private readonly S7Client Client = new S7Client();
         #region [Constants, private vars and TypeDefs]
@@ -106,7 +106,7 @@ namespace BaseClass.Communication
 
         #endregion
 
-        ~TianhengPlcSnap7()
+        ~ThPlcSnap7()
         {
             Client.Disconnect();
         }

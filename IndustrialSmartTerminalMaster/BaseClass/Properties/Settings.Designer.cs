@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BaseClass.Properties
+namespace IndustrialSmartTerminal.Properties
 {
 
 

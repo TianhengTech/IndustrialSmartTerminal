@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Modbus.Device;
-using BaseClass.Communication;
+using IndustrialSmartTerminal.Communication;
 using System.Net.Sockets;
 
-namespace BaseClass
+namespace IndustrialSmartTerminal
 {
     public partial class Form1 : Form
     {
-        TianhengPlc_Snap7 Client = new TianhengPlc_Snap7();
+        TianhengPlcSnap7 Client = new TianhengPlcSnap7();
         byte[] buffer = new byte[2048];
         public Form1()
         {

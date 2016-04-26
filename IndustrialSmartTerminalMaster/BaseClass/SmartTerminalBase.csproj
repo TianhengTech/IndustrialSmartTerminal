@@ -94,15 +94,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\ModbusIOBase.cs" />
-    <Compile Include="Communication\TianhengPlc_Snap7.cs" />
+    <Compile Include="Communication\ModbusBase.cs" />
+    <Compile Include="Communication\ThPlcSnap7.cs" />
     <Compile Include="Communication\ProfinetCommunicationBase.cs" />
     <Compile Include="Communication\SerialBase.cs" />
-    <Compile Include="Communication\TianhengSerial.cs" />
+    <Compile Include="Communication\ThSerial.cs" />
     <Compile Include="FileEditor\ConfigFileBase.cs" />
     <Compile Include="FileEditor\TextManagerBase.cs" />
-    <Compile Include="FileEditor\TianhengExcelExport.cs" />
-    <Compile Include="FileEditor\TianhengUDiskMonitor.cs">
+    <Compile Include="FileEditor\ThExcelExport.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="FileEditor\ThUDiskMonitor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.cs">
@@ -111,22 +113,24 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Communication\TianhengModbusObject.cs" />
+    <Compile Include="Communication\ThModbusObject.cs" />
     <Compile Include="TerminalUltility\DataProcessBase.cs" />
-    <Compile Include="TerminalUltility\TianhengPlcCommand.cs" />
+    <Compile Include="TerminalUltility\ThPlcCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FileEditor\TianhengConfigFileManager.cs" />
-    <Compile Include="Communication\TianhengS7Socket.cs" />
+    <Compile Include="FileEditor\ThConfigFileManager.cs" />
+    <Compile Include="Communication\ThS7Socket.cs" />
     <Compile Include="Communication\Snap7.net.cs" />
-    <Compile Include="TerminalUltility\SQLiteManagerBase.cs" />
-    <Compile Include="TerminalUltility\TianhengTerminalCommon.cs" />
-    <Compile Include="TerminalUltility\TianhengTerminalLocalDataStorage.cs" />
-    <Compile Include="TerminalUltility\TianhengTerminalLogWriter.cs" />
-    <Compile Include="TerminalUltility\TianhengTerminalQueues.cs" />
-    <Compile Include="FileEditor\TianhengTextCommand.cs" />
-    <Compile Include="Communication\TianhengS7PPI.cs" />
-    <Compile Include="TestForm.cs" />
+    <Compile Include="DataBase\SQLiteManagerBase.cs" />
+    <Compile Include="TerminalUltility\ThTerminalCommon.cs" />
+    <Compile Include="TerminalUltility\ThTerminalLocalDataStorage.cs" />
+    <Compile Include="Logger\TianhengTerminalLogWriter.cs" />
+    <Compile Include="TerminalUltility\ThTerminalQueues.cs" />
+    <Compile Include="FileEditor\ThTextCommand.cs" />
+    <Compile Include="Communication\ThS7PPI.cs" />
+    <Compile Include="TestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TestForm.Designer.cs">
       <DependentUpon>TestForm.cs</DependentUpon>
     </Compile>
@@ -151,6 +155,7 @@
     <EmbeddedResource Include="TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Logger\Log4Net.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -161,13 +166,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MySql\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.99.0\build\net45\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
