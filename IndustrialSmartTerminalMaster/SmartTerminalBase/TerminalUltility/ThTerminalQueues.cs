@@ -40,11 +40,15 @@ namespace SmartTerminalBase.TerminalUltility
     {
         public DateTime daq_time;
         public Dictionary<string, int> plc_data;
+        public Dictionary<string, string> plc_time;
+        public Dictionary<string, string> temp_value;
 
         public PlcDAQCommunicationObject()
         {
             plc_data = new Dictionary<string, int>();
+            plc_time = new Dictionary<string, string>();
             daq_time = DateTime.Now;
+            temp_value = new Dictionary<string, string>();
         }
     }
 }

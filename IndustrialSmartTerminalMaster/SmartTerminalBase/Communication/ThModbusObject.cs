@@ -55,9 +55,9 @@ namespace SmartTerminalBase.Communication
             port = new SerialPort
             {
                 BaudRate = baudrate,
-                DataBits = 8,
+                DataBits = dataBits,
                 Parity = parity,
-                StopBits = StopBits.One,
+                StopBits = stopbits,
                 PortName = portName
             };
             port.Open();
@@ -114,7 +114,7 @@ namespace SmartTerminalBase.Communication
             switch(registertype)
             {
                 case(0x01):
-                    return Master.ReadHoldingRegisters(slaveaddress, start, amount);
+                    return Master.ReadHoldingRegisters(slaveaddress, start,amount);
                 case(0x02):
                     return Master.ReadInputRegisters(slaveaddress, start, amount);
                 default:

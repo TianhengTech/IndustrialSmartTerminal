@@ -243,7 +243,7 @@ namespace SmartTerminalBase.Communication
         /// <returns></returns>
         public override DateTime GetPlctime()
         {
-            var time = Convert.ToDateTime("0000-00-00");
+            var time = Convert.ToDateTime("1000-10-10");
             var i = Client.GetPlcDateTime(ref time);
             if (i == 0)
             {

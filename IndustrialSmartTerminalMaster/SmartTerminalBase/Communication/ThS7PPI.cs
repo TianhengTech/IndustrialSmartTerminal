@@ -47,7 +47,6 @@ namespace S7_PPI_Space
         {       
             try{
                 this.SPort.Open();
-                Thread.Sleep(200);
 				if(true) Trace.WriteLine("端口打开成功！");
                 return true;
             }
@@ -104,6 +103,7 @@ namespace S7_PPI_Space
             int receiveLength=0;
             try{
                 SPort.Write(Hex2Bytes(Cmd), 0,Hex2Bytes(Cmd).Length);
+             
                 if (SPort.ReadByte() == 0xe5)
                 {
                     if (Debug) Trace.WriteLine("E5 OK");

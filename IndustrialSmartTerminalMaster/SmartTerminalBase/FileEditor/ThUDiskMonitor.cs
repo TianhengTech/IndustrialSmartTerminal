@@ -10,7 +10,7 @@ namespace SmartTerminalBase.FileEditor
     ///     Detect Flash Device
     ///     Copy the class Contents into your MainForm!
     /// </summary>
-    public class UDiskMonitor : Form
+    public class UDiskMonitor:Form
     {
         public const int WmDevicechange = 0x219;
         public const int DbtDevicearrival = 0x8000;

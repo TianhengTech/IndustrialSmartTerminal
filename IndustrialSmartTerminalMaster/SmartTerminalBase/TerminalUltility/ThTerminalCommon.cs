@@ -38,7 +38,7 @@ namespace SmartTerminalBase.TerminalUltility
         public static string S7200DataDword = "dword";
         //Your Dictionaries go here
         public static Dictionary<string, string> realtime_gui = new Dictionary<string, string>();
-        public static Dictionary<string, string> warn_info = new Dictionary<string, string>();
+        public static Dictionary<string, string> PlcAddress = new Dictionary<string, string>();
 
 
         //获取内网IP

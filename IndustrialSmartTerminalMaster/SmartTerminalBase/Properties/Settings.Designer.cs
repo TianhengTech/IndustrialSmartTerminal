@@ -22,5 +22,29 @@ namespace SmartTerminalBase.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM6")]
+        public string ModbusPort {
+            get {
+                return ((string)(this["ModbusPort"]));
+            }
+            set {
+                this["ModbusPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM4")]
+        public string PPIport {
+            get {
+                return ((string)(this["PPIport"]));
+            }
+            set {
+                this["PPIport"] = value;
+            }
+        }
     }
 }

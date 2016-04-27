@@ -7,14 +7,14 @@ using System.Text;
 
 namespace SmartTerminalBase.FileEditor
 {
-    internal class ConfigFileManager : ConfigFileBase
+    internal class ThConfigFileManager : ConfigFileBase
     {
         /// <summary>
         ///     以字典形式返回键值对
         /// </summary>
         /// <param name="allKeyValue"></param>
         /// <returns></returns>
-        public static Dictionary<string, string> ConvertToDictionary(string[] allKeyValue)
+        public Dictionary<string, string> ConvertToDictionary(string[] allKeyValue)
         {
             var results = new Dictionary<string, string>();
             foreach (var Key_Value in allKeyValue)

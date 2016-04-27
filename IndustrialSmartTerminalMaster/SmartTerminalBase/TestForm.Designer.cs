@@ -1,4 +1,4 @@
-﻿namespace IndustrialSmartTerminal
+﻿namespace SmartTerminalBase
 {
     partial class TestForm
     {
