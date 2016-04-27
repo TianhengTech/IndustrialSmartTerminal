@@ -1,7 +1,7 @@
 ﻿using System.IO.Ports;
 using Modbus.Device;
 
-namespace BaseClass.Communication
+namespace SmartTerminalBase.Communication
 {
     internal abstract class ModbusBase
     {

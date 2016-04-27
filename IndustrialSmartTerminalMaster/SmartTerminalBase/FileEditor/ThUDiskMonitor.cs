@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace BaseClass.FileEditor
+namespace SmartTerminalBase.FileEditor
 {
     /// <summary>
     ///     Detect Flash Device

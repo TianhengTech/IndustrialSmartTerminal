@@ -3,7 +3,7 @@ using System.IO;
 using System.Security;
 using System.Text;
 
-namespace BaseClass.FileEditor
+namespace SmartTerminalBase.FileEditor
 {
     internal class ThTextCommand : TextManagerBase
     {

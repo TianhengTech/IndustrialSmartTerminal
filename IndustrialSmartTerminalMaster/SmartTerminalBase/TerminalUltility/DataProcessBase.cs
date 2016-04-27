@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BaseClass.TerminalUltility
+namespace SmartTerminalBase.TerminalUltility
 {
     internal class DataProcessBase
     {

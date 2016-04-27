@@ -20,7 +20,7 @@ D区调用需要加为DB的那个块，如程序中DB3则为0x84+0x300
 S7S.Get_Cpu_State() 只适用于S7-1200
 */
 
-namespace BaseClass.Communication
+namespace SmartTerminalBase.Communication
 {
     class S7_Socket
     {

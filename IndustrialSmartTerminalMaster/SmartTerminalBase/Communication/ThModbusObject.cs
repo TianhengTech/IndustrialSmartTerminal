@@ -11,7 +11,7 @@ using System.Net.Sockets;
 
 
 
-namespace BaseClass.Communication
+namespace SmartTerminalBase.Communication
 {
     class ThModbusObject:ModbusBase
     {

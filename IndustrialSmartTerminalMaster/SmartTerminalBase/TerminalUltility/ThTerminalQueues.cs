@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 
-namespace BaseClass.TerminalUltility
+namespace SmartTerminalBase.TerminalUltility
 {
     internal class TerminalQueues
     {

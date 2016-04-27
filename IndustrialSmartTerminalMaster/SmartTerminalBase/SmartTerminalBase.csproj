@@ -7,7 +7,7 @@
     <ProjectGuid>{B8C28AA5-92F7-4458-953D-31439E358274}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BaseClass</RootNamespace>
+    <RootNamespace>SmartTerminalBase</RootNamespace>
     <AssemblyName>BaseClass</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -124,7 +124,7 @@
     <Compile Include="DataBase\SQLiteManagerBase.cs" />
     <Compile Include="TerminalUltility\ThTerminalCommon.cs" />
     <Compile Include="TerminalUltility\ThTerminalLocalDataStorage.cs" />
-    <Compile Include="Logger\TianhengTerminalLogWriter.cs" />
+    <Compile Include="Logger\ThTerminalLogWriter.cs" />
     <Compile Include="TerminalUltility\ThTerminalQueues.cs" />
     <Compile Include="FileEditor\ThTextCommand.cs" />
     <Compile Include="Communication\ThS7PPI.cs" />
@@ -151,6 +151,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>

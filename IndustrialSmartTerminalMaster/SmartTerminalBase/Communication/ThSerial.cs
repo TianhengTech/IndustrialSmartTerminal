@@ -1,6 +1,6 @@
 ﻿using System.IO.Ports;
 
-namespace BaseClass.Communication
+namespace SmartTerminalBase.Communication
 {
     internal class ThSerial : SerialBase
     {

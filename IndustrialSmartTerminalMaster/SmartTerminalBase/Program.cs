@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-namespace BaseClass
+namespace SmartTerminalBase
 {
     static class Program
     {

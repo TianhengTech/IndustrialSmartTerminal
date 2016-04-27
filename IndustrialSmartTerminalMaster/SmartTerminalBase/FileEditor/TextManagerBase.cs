@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace BaseClass.FileEditor
+namespace SmartTerminalBase.FileEditor
 {
     internal abstract class TextManagerBase
     {

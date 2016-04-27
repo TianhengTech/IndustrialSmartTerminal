@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Data;
 using System.Data.SQLite;
+using SmartTerminalBase.DataBase;
+
 //这个可以去网上下载
 
-namespace BaseClass.TerminalUltility
+namespace SmartTerminalBase.TerminalUltility
 
 {
     internal class TerminalLocalDataStorage : SQLiteManagerBase

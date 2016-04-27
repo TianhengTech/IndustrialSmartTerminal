@@ -1,7 +1,7 @@
 ﻿using System;
 using Snap7;
 
-namespace BaseClass.Communication
+namespace SmartTerminalBase.Communication
 {
     internal class ThPlcSnap7 : ProfinetCommunicationBase
     {

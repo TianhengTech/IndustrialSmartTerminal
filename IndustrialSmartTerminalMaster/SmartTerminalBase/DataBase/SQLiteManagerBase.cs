@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.SQLite;
 
-namespace BaseClass.TerminalUltility
+namespace SmartTerminalBase.DataBase
 {
     internal abstract class SQLiteManagerBase
     {

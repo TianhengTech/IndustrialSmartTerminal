@@ -4,7 +4,7 @@ using NPOI.HPSF;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 
-namespace BaseClass.FileEditor
+namespace SmartTerminalBase.FileEditor
 {
     internal class ExcelExport
     {

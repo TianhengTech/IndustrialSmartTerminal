@@ -1,4 +1,4 @@
-﻿namespace BaseClass.TerminalUltility
+﻿namespace SmartTerminalBase.TerminalUltility
 {
     //定义PLC数据格式
     internal class PlcCommand

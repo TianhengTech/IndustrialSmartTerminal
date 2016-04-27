@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 
-namespace BaseClass.TerminalUltility
+namespace SmartTerminalBase.TerminalUltility
 {
     internal class TerminalCommon
     {

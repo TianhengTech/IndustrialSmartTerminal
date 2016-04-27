@@ -1,7 +1,7 @@
 ﻿using System;
 using log4net;
 
-namespace BaseClass.TerminalUltility
+namespace SmartTerminalBase.TerminalUltility
 {
     internal class TerminalLogWriter
     {

@@ -1,4 +1,4 @@
-﻿namespace BaseClass.Communication
+﻿namespace SmartTerminalBase.Communication
 {
     internal class SerialBase
     {

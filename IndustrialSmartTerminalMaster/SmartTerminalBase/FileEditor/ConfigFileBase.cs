@@ -1,4 +1,4 @@
-﻿namespace BaseClass.FileEditor
+﻿namespace SmartTerminalBase.FileEditor
 {
     internal abstract class ConfigFileBase
     {
