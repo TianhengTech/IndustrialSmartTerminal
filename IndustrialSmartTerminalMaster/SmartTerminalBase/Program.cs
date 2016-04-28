@@ -15,6 +15,8 @@ using SmartTerminalBase.Communication;
 using SmartTerminalBase.DataBase;
 using SmartTerminalBase.FileEditor;
 using SmartTerminalBase.TerminalUltility;
+using System.Diagnostics;
+
 namespace SmartTerminalBase
 {
     static class Program
@@ -30,11 +32,14 @@ namespace SmartTerminalBase
             //Application.Run(new Form1());
             MinimalSystem p1 = new MinimalSystem();
             p1.Run();
-            Console.WriteLine();
-            Console.ReadKey();
+            Console.ReadLine();
+            p1.Stop();
+            
         }
     }
+
     #region minimalsystem
+
     class MinimalSystem
     {
         private S7_PPI S7200;
@@ -42,7 +47,9 @@ namespace SmartTerminalBase
         private ThPlcSnap7 s71200;
         private ThModbusObject dam3038;
         private Thread DataProcessThread;
-        public  ILog log;
+        public ILog log;
+        private Thread DataCenterThread;
+        private ISessionFactory  sessionFactory;
 
         public void Run()
         {
@@ -51,43 +58,60 @@ namespace SmartTerminalBase
             ConnectToSensor();
             ReadThread = new Thread(ReadCycle) { IsBackground = true };
             ReadThread.Start();
-            DataProcessThread = new Thread(DataProcess) {IsBackground = true};
+            DataProcessThread = new Thread(DataProcess) { IsBackground = true };
             DataProcessThread.Start();
-
+            DataCenterThread = new Thread(DataCenterSave) {IsBackground = true};
+            DataCenterThread.Start();
         }
+
         private void Init()
-        {              
-            log=LogManager.GetLogger(typeof(MinimalSystem));  
+        {
+            sessionFactory = FluentNHibernateHelper.GetSessionFactory();
+            Console.WriteLine("SessionFactory Got!");
+            log = LogManager.GetLogger(typeof(MinimalSystem));
             ThConfigFileManager manager = new ThConfigFileManager();
             TerminalCommon.PlcAddress = manager.ConvertToDictionary(manager.IniGetAllItems("./cfg.ini", "address"));
+            Console.WriteLine("Initialize finished!");
         }
+
         void ConnectToPlc()
         {
             s71200 = new ThPlcSnap7();
-            s71200.ConnectTo("192.168.1.50", 0, 0);
-            S7200 = new S7_PPI("COM4", 9600);
-            S7200.Connect(0x02);
+            if (s71200.ConnectTo("192.168.1.50", 0, 0) == 0)
+            {
+                Console.WriteLine("S7-1200 Connected!");
+            }
+            S7200 = new S7_PPI(Properties.Settings.Default.PPIport, 9600);
+            if (S7200.Connect(0x02))
+            {
+                Console.WriteLine("S7-200 Connected");
+            }
         }
+
         void ConnectToSensor()
         {
             dam3038 = new ThModbusObject();
-            var master=dam3038.CreateRtuMaster(Properties.Settings.Default.ModbusPort);
-            dam3038.ReadTimeOut= 1000;
+            var master = dam3038.CreateRtuMaster(Properties.Settings.Default.ModbusPort);
+            dam3038.ReadTimeOut = 300;
         }
+
         void ReadCycle()
         {
-           
             bool plcread = false;
             bool plcread_ppi = false;
             bool sensorread = false;
-            byte[] buffer = new byte[256];           
+            byte[] buffer = new byte[256];
             while (true)
             {
+                Stopwatch sw = new Stopwatch();
+                Console.Beep() ;
+                sw.Start();
                 var plcdata = new PlcDAQCommunicationObject();
                 if (!s71200.IsConneted())
                 {
                     s71200.Connect();
                     plcread = false;
+                    Console.WriteLine("S7-1200 READ ERROR");
                 }
                 else
                 {
@@ -105,19 +129,30 @@ namespace SmartTerminalBase
                             }
                             string plctime = s71200.PlCstatus();
                             plcdata.plc_time["PLC_TIME"] = plctime;
-                        } 
-                     }
-                    plcread = true;       
+                        }
+                    }
+                    Console.WriteLine("S7-1200 READ");
+                    plcread = true;
                 }
                 try
                 {
                     double ppiresult = S7200.Read(S7200.AreaV, 4000, S7200.LenW)/10.0d;
-                    plcdata.temp_value["EM231:"] = ppiresult.ToString("0.0")+"℃";
-                    plcread_ppi = true;
+                    if (ppiresult != 0)
+                    {
+                        plcdata.temp_value["EM231:"] = ppiresult.ToString("0.0") + "℃";
+                        plcread_ppi = true;
+                        Console.WriteLine("S7-200 READ");
+                    }
+                    else
+                    {
+                        plcread = false;
+                        Console.WriteLine("S7-200 READ ERROR");
+                    }
                 }
                 catch
                 {
                     plcread_ppi = false;
+                    Console.WriteLine("S7-200 READ ERROR");
                 }
                 try
                 {
@@ -125,70 +160,88 @@ namespace SmartTerminalBase
                     ushort[] buf2 = dam3038.ReadRegister(1, ThModbusObject.InputRegister, 399, 1);
                     for (int i = 0; i < 16; i = i + 2)
                     {
-                        plcdata.temp_value["Sensor_" + (i / 2).ToString()] = (buf[i] / 65535.0d * 1300).ToString("0.00")+"℃";
-                    }                  
-                    plcdata.temp_value["Environment_temp"] = (buf2[0] / 10.0d - 273.15).ToString("0.00")+"℃";
+                        plcdata.temp_value["Sensor_" + (i/2).ToString()] = (buf[i]/65535.0d*1300).ToString("0.00") + "℃";
+                    }
+                    plcdata.temp_value["Environment_temp"] = (buf2[0]/10.0d - 273.15).ToString("0.00") + "℃";
                     sensorread = true;
+                    Console.WriteLine("DAM3038 READ");
                 }
                 catch (Exception ex)
                 {
                     sensorread = false;
-                    log.Error("ModbusError:"+ex);
+                    Console.WriteLine("DAM3038 READ ERROR");
+                    log.Error("ModbusError:" + ex);
                 }
-                if (plcread || sensorread||plcread_ppi)
+                if (plcread || sensorread || plcread_ppi)
                 {
+                    Console.Beep(10000,200);
                     TerminalQueues.plcdataprocessqueue.Enqueue(plcdata);
-                    TerminalQueues.datacenterprocessqueue.Enqueue(plcdata);
+                    TerminalQueues.datacenterprocessqueue.Enqueue(plcdata);                
+                    sw.Stop();
+                    Console.WriteLine("Enqueue "+sw.ElapsedMilliseconds+" ms");
+
                 }
-               
-                
-                Thread.Sleep(1000);
+                if (sw.ElapsedMilliseconds >= 1000)
+                    continue;
+                else
+                    Thread.Sleep((int)(1000 - sw.ElapsedMilliseconds));
             }
         }
 
         void DataCenterSave()
-        {
-            ISession session = FluentNHibernateHelper.GetSession();
+        {            
             PlcDAQCommunicationObject plcdata = new PlcDAQCommunicationObject();
-            while (true)
+            using(var session = sessionFactory.OpenSession())
             {
-                if (TerminalQueues.datacenterprocessqueue.TryDequeue(out plcdata))
+                while (true)
                 {
-                    string jsonstring;
-                    JsonConvert.SerializeObject(plcdata.plc_data);
-                    historydata hi = new historydata
+                    try
                     {
-                        json_string =
-                            JsonConvert.SerializeObject(plcdata.plc_data) +
-                            JsonConvert.SerializeObject(plcdata.temp_value) +
-                            JsonConvert.SerializeObject(plcdata.plc_time),
-                        storetime = plcdata.daq_time
-                    };
-                    session.Save(hi);
-                    session.Flush();
-                }
-
+                        if (TerminalQueues.datacenterprocessqueue.TryDequeue(out plcdata))
+                        {
+                            string jsonstring;
+                            JsonConvert.SerializeObject(plcdata.plc_data);
+                            historydata hi = new historydata
+                            {
+                                json_string =
+                                    JsonConvert.SerializeObject(plcdata.plc_data) +
+                                    JsonConvert.SerializeObject(plcdata.temp_value) +
+                                    JsonConvert.SerializeObject(plcdata.plc_time),
+                                storetime = plcdata.daq_time
+                            };
+                            using (var trans = session.BeginTransaction())
+                            {
+                                session.Save(hi);
+                                trans.Commit();
+                            }
+                            Console.WriteLine("Data Center Processed!");
+                        }
+                        Thread.Sleep(1000);
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Error("Data Center Error:" + ex);
+                    }
+            }         
             }
-
         }
+
         void DataProcess()
         {
-
             PlcDAQCommunicationObject plcdata = new PlcDAQCommunicationObject();
             while (true)
             {
-                if(TerminalQueues.plcdataprocessqueue.TryDequeue(out plcdata))
+                if (TerminalQueues.plcdataprocessqueue.TryDequeue(out plcdata))
                 {
                     Console.WriteLine(@"Data:");
                     foreach (var item in plcdata.plc_data)
                     {
-                        Console.WriteLine(item.Key+@"="+item.Value+" Processed");
-                        
+                        Console.WriteLine(item.Key + @"=" + item.Value + " Processed");
                     }
-                   // Console.WriteLine("PLC_TIME:"+plcdata.plc_time["PLC_TIME"]);
+                    // Console.WriteLine("PLC_TIME:"+plcdata.plc_time["PLC_TIME"]);
                     foreach (var item in plcdata.temp_value)
                     {
-                        Console.WriteLine(item.Key + @"=" + item.Value);
+                        Console.WriteLine(item.Key + @"=" + item.Value+"Processed");
                     }
                     Console.WriteLine("Time:" + plcdata.daq_time);
                 }
@@ -196,6 +249,7 @@ namespace SmartTerminalBase
         }
 
         static readonly char[] wtype = "BWD".ToCharArray();
+
         public static void BufferDump(PlcDAQCommunicationObject daq, byte[] buffer, int start, int size, string area)
         {
             if (buffer == null)
@@ -211,16 +265,32 @@ namespace SmartTerminalBase
                 Array.Reverse(bytes);
                 for (int j = 0; j < Wordlen; j++)
                 {
-                    value = value + (bytes[j] << 8 * j);
+                    value = value + (bytes[j] << 8*j);
                 }
                 daq.plc_data[key] = value;
             }
             return;
         }
+        public void Stop()
+        {
+            if(ReadThread.IsAlive)
+            {
+                ReadThread.Abort();
+            }
+            if(DataCenterThread.IsAlive)
+            {
+                DataCenterThread.Abort();
+            }
+            if(DataProcessThread.IsAlive)
+            {
+                DataProcessThread.Abort();
+            }
+            if(!sessionFactory.IsClosed)
+            {
+                sessionFactory.Close();
+            }
+        }
     }
 
-#endregion
-
-
-
+    #endregion
 }

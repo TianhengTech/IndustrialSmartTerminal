@@ -120,20 +120,21 @@
     <Compile Include="Communication\ThSerial.cs" />
     <Compile Include="DataBase\NhibernateGroup.cs" />
     <Compile Include="DataBase\NhibernateHelper.cs" />
-    <Compile Include="FileEditor\ConfigFileBase.cs" />
-    <Compile Include="FileEditor\TextManagerBase.cs" />
-    <Compile Include="FileEditor\ThExcelExport.cs">
+    <Compile Include="File\ConfigFileBase.cs" />
+    <Compile Include="File\TextManagerBase.cs" />
+    <Compile Include="File\ThExcelExport.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="FileEditor\ThUDiskMonitor.cs">
+    <Compile Include="File\ThUDiskMonitor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Communication\ThModbusObject.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="TerminalUltility\DataProcessBase.cs" />
     <Compile Include="TerminalUltility\ThPlcCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FileEditor\ThConfigFileManager.cs" />
+    <Compile Include="File\ThConfigFileManager.cs" />
     <Compile Include="Communication\ThS7Socket.cs" />
     <Compile Include="Communication\Snap7.net.cs" />
     <Compile Include="DataBase\SQLiteManagerBase.cs" />
@@ -141,7 +142,7 @@
     <Compile Include="TerminalUltility\ThTerminalLocalDataStorage.cs" />
     <Compile Include="Logger\ThTerminalLogWriter.cs" />
     <Compile Include="TerminalUltility\ThTerminalQueues.cs" />
-    <Compile Include="FileEditor\ThTextCommand.cs" />
+    <Compile Include="File\ThTextCommand.cs" />
     <Compile Include="Communication\ThS7PPI.cs" />
     <Compile Include="TestForm.cs">
       <SubType>Form</SubType>
@@ -173,7 +174,7 @@
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">

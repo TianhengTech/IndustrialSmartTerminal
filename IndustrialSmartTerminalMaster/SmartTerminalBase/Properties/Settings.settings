@@ -2,10 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SmartTerminalBase.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ModbusPort" Type="System.String" Scope="User">
-      <Value Profile="(Default)">COM6</Value>
+    <Setting Name="ModbusPort" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">COM3</Value>
     </Setting>
-    <Setting Name="PPIport" Type="System.String" Scope="User">
+    <Setting Name="PPIport" Type="System.String" Scope="Application">
       <Value Profile="(Default)">COM4</Value>
     </Setting>
   </Settings>
