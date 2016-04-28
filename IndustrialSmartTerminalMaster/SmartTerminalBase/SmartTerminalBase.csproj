@@ -41,12 +41,24 @@
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentNHibernate, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentNHibernate.2.0.3.0\lib\net40\FluentNHibernate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.1.3.1\lib\net40\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <HintPath>..\packages\NHibernate.4.0.0.4000\lib\net40\NHibernate.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NModbus4, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -99,26 +111,22 @@
     <Compile Include="Communication\ProfinetCommunicationBase.cs" />
     <Compile Include="Communication\SerialBase.cs" />
     <Compile Include="Communication\ThSerial.cs" />
-    <Compile Include="FileEditor\ConfigFileBase.cs" />
-    <Compile Include="FileEditor\TextManagerBase.cs" />
-    <Compile Include="FileEditor\ThExcelExport.cs">
+    <Compile Include="DataBase\NhibernateGroup.cs" />
+    <Compile Include="DataBase\NhibernateHelper.cs" />
+    <Compile Include="File\ConfigFileBase.cs" />
+    <Compile Include="File\TextManagerBase.cs" />
+    <Compile Include="File\ThExcelExport.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="FileEditor\ThUDiskMonitor.cs">
+    <Compile Include="File\ThUDiskMonitor.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Communication\ThModbusObject.cs" />
     <Compile Include="TerminalUltility\DataProcessBase.cs" />
     <Compile Include="TerminalUltility\ThPlcCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FileEditor\ThConfigFileManager.cs" />
+    <Compile Include="File\ThConfigFileManager.cs" />
     <Compile Include="Communication\ThS7Socket.cs" />
     <Compile Include="Communication\Snap7.net.cs" />
     <Compile Include="DataBase\SQLiteManagerBase.cs" />
@@ -126,23 +134,14 @@
     <Compile Include="TerminalUltility\ThTerminalLocalDataStorage.cs" />
     <Compile Include="Logger\ThTerminalLogWriter.cs" />
     <Compile Include="TerminalUltility\ThTerminalQueues.cs" />
-    <Compile Include="FileEditor\ThTextCommand.cs" />
+    <Compile Include="File\ThTextCommand.cs" />
     <Compile Include="Communication\ThS7PPI.cs" />
-    <Compile Include="TestForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TestForm.Designer.cs">
-      <DependentUpon>TestForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="UIComponet\CustomButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UIComponet\NewTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -153,9 +152,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="TestForm.resx">
-      <DependentUpon>TestForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Logger\Log4Net.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
