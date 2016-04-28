@@ -41,7 +41,7 @@ namespace SmartTerminalBase.DataBase
                      //.ShowSql()
                      )
                              //映射程序集
-                             .Mappings(m=>m.AutoMappings.Add(AutoMap.AssemblyOf<))
+                            
                      .Mappings(m => m.FluentMappings
                          .AddFromAssembly(System.Reflection.Assembly.Load("SmartTerminalBase"))
                          )
