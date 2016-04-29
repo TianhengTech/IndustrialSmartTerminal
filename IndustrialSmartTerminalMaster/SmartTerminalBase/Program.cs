@@ -214,13 +214,13 @@ namespace SmartTerminalBase
                                 session.Save(hi);
                                 trans.Commit();
                             }
-                            Console.WriteLine("Data Center Processed!");
+                            Console.WriteLine("Data Center Processed!,ex");
                         }
                         Thread.Sleep(1000);
                     }
                     catch (Exception ex)
                     {
-                        log.Error("Data Center Error:" + ex);
+                        log.Error("Data Center Error:" ,ex ex);
                     }
                 }
             }
