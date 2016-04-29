@@ -1,0 +1,5 @@
+D:\visual studio 2013\Github\IndustrialSmartTerminal\IndustrialSmartTerminalMaster\SmartTerminalBase\obj\Release\SmartTerminalBase.csprojResolveAssemblyReference.cache
+D:\visual studio 2013\Github\IndustrialSmartTerminal\IndustrialSmartTerminalMaster\SmartTerminalBase\obj\Release\SmartTerminalBase.Properties.Resources.resources
+D:\visual studio 2013\Github\IndustrialSmartTerminal\IndustrialSmartTerminalMaster\SmartTerminalBase\obj\Release\SmartTerminalBase.TestForm.resources
+D:\visual studio 2013\Github\IndustrialSmartTerminal\IndustrialSmartTerminalMaster\SmartTerminalBase\obj\Release\SmartTerminalBase.csproj.GenerateResource.Cache
+D:\visual studio 2013\Github\IndustrialSmartTerminal\IndustrialSmartTerminalMaster\SmartTerminalBase\bin\Release\SmartTerminalBase.exe.config
