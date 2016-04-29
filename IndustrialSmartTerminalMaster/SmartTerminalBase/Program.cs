@@ -16,6 +16,7 @@ using SmartTerminalBase.DataBase;
 using SmartTerminalBase.FileEditor;
 using SmartTerminalBase.TerminalUltility;
 using System.Diagnostics;
+using Modbus.IO;
 
 namespace SmartTerminalBase
 {
@@ -34,7 +35,6 @@ namespace SmartTerminalBase
             p1.Run();
             Console.ReadLine();
             p1.Stop();
-            
         }
     }
 
@@ -49,16 +49,17 @@ namespace SmartTerminalBase
         private Thread DataProcessThread;
         public ILog log;
         private Thread DataCenterThread;
-        private ISessionFactory  sessionFactory;
+        private ISessionFactory sessionFactory;
 
         public void Run()
         {
+            log = LogManager.GetLogger(typeof(MinimalSystem));
             Init();
             ConnectToPlc();
             ConnectToSensor();
-            ReadThread = new Thread(ReadCycle) { IsBackground = true };
+            ReadThread = new Thread(ReadCycle) {IsBackground = true};
             ReadThread.Start();
-            DataProcessThread = new Thread(DataProcess) { IsBackground = true };
+            DataProcessThread = new Thread(DataProcess) {IsBackground = true};
             DataProcessThread.Start();
             DataCenterThread = new Thread(DataCenterSave) {IsBackground = true};
             DataCenterThread.Start();
@@ -68,7 +69,7 @@ namespace SmartTerminalBase
         {
             sessionFactory = FluentNHibernateHelper.GetSessionFactory();
             Console.WriteLine("SessionFactory Got!");
-            log = LogManager.GetLogger(typeof(MinimalSystem));
+
             ThConfigFileManager manager = new ThConfigFileManager();
             TerminalCommon.PlcAddress = manager.ConvertToDictionary(manager.IniGetAllItems("./cfg.ini", "address"));
             Console.WriteLine("Initialize finished!");
@@ -92,7 +93,6 @@ namespace SmartTerminalBase
         {
             dam3038 = new ThModbusObject();
             var master = dam3038.CreateRtuMaster(Properties.Settings.Default.ModbusPort);
-            dam3038.ReadTimeOut = 300;
         }
 
         void ReadCycle()
@@ -104,7 +104,7 @@ namespace SmartTerminalBase
             while (true)
             {
                 Stopwatch sw = new Stopwatch();
-                Console.Beep() ;
+                Console.Beep();
                 sw.Start();
                 var plcdata = new PlcDAQCommunicationObject();
                 if (!s71200.IsConneted())
@@ -157,6 +157,7 @@ namespace SmartTerminalBase
                 try
                 {
                     ushort[] buf = dam3038.ReadRegister(1, ThModbusObject.InputRegister, 256, 16);
+
                     ushort[] buf2 = dam3038.ReadRegister(1, ThModbusObject.InputRegister, 399, 1);
                     for (int i = 0; i < 16; i = i + 2)
                     {
@@ -174,24 +175,23 @@ namespace SmartTerminalBase
                 }
                 if (plcread || sensorread || plcread_ppi)
                 {
-                    Console.Beep(10000,200);
+                    Console.Beep(10000, 200);
                     TerminalQueues.plcdataprocessqueue.Enqueue(plcdata);
-                    TerminalQueues.datacenterprocessqueue.Enqueue(plcdata);                
+                    TerminalQueues.datacenterprocessqueue.Enqueue(plcdata);
                     sw.Stop();
-                    Console.WriteLine("Enqueue "+sw.ElapsedMilliseconds+" ms");
-
+                    Console.WriteLine("Enqueue " + sw.ElapsedMilliseconds + " ms");
                 }
                 if (sw.ElapsedMilliseconds >= 1000)
                     continue;
                 else
-                    Thread.Sleep((int)(1000 - sw.ElapsedMilliseconds));
+                    Thread.Sleep((int) (1000 - sw.ElapsedMilliseconds));
             }
         }
 
         void DataCenterSave()
-        {            
+        {
             PlcDAQCommunicationObject plcdata = new PlcDAQCommunicationObject();
-            using(var session = sessionFactory.OpenSession())
+            using (var session = sessionFactory.OpenSession())
             {
                 while (true)
                 {
@@ -222,7 +222,7 @@ namespace SmartTerminalBase
                     {
                         log.Error("Data Center Error:" + ex);
                     }
-            }         
+                }
             }
         }
 
@@ -241,7 +241,7 @@ namespace SmartTerminalBase
                     // Console.WriteLine("PLC_TIME:"+plcdata.plc_time["PLC_TIME"]);
                     foreach (var item in plcdata.temp_value)
                     {
-                        Console.WriteLine(item.Key + @"=" + item.Value+"Processed");
+                        Console.WriteLine(item.Key + @"=" + item.Value + "Processed");
                     }
                     Console.WriteLine("Time:" + plcdata.daq_time);
                 }
@@ -271,21 +271,22 @@ namespace SmartTerminalBase
             }
             return;
         }
+
         public void Stop()
         {
-            if(ReadThread.IsAlive)
+            if (ReadThread.IsAlive)
             {
                 ReadThread.Abort();
             }
-            if(DataCenterThread.IsAlive)
+            if (DataCenterThread.IsAlive)
             {
                 DataCenterThread.Abort();
             }
-            if(DataProcessThread.IsAlive)
+            if (DataProcessThread.IsAlive)
             {
                 DataProcessThread.Abort();
             }
-            if(!sessionFactory.IsClosed)
+            if (!sessionFactory.IsClosed)
             {
                 sessionFactory.Close();
             }
