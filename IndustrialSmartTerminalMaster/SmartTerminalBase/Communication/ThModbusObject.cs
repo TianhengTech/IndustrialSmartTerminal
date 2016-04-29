@@ -59,8 +59,11 @@ namespace SmartTerminalBase.Communication
                 Parity = parity,
                 StopBits = stopbits,
                 PortName = portName
-            };
+            };         
+            port.Close();
             port.Open();
+        
+            
 
             Master = ModbusSerialMaster.CreateRtu(port);
             return Master;
