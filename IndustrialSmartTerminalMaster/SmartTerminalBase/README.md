@@ -1,3 +1,5 @@
+
+
 2016/4/29  日志分类输出，INFO，ERROR分为两个文件输出，不再输出Nhibernate的INFO数据(占用大量空间，99%为无用数据)
 
 2016/4/28 在WINDOWS10上实现，修正NHIBERNATE中非线程安全的Isession类问题

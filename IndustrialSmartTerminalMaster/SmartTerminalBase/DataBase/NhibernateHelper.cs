@@ -1,6 +1,7 @@
 ﻿using FluentNHibernate;
 using FluentNHibernate.Automapping;
 using NHibernate;
+using NHibernate.Tool.hbm2ddl;
 
 namespace SmartTerminalBase.DataBase
 {
@@ -28,9 +29,7 @@ namespace SmartTerminalBase.DataBase
                          //配置ISessionFactory
                          _sessionFactory = FluentNHibernate.Cfg.Fluently.Configure()
                              //数据库配置
-                 .Database(
-                             //方言
-                 FluentNHibernate.Cfg.Db.MySQLConfiguration.Standard
+                 .Database(FluentNHibernate.Cfg.Db.MySQLConfiguration.Standard
                              //连接字符串
                  .ConnectionString(
                       c => c.Server("192.168.1.25")
@@ -41,12 +40,12 @@ namespace SmartTerminalBase.DataBase
                      //.ShowSql()
                      )
                              //映射程序集
-                            
-                     .Mappings(m => m.FluentMappings
-                         .AddFromAssembly(System.Reflection.Assembly.Load("SmartTerminalBase"))
-                         )
-                     .BuildSessionFactory();
- 
+
+                      .Mappings(
+                         m => m.FluentMappings                         
+                         .AddFromAssembly(System.Reflection.Assembly.Load("SmartTerminalBase")))
+                         
+                     .BuildSessionFactory(); 
                      }
                  }
              }

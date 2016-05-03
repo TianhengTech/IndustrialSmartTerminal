@@ -170,6 +170,11 @@
     <EmbeddedResource Include="TestForm.resx">
       <DependentUpon>TestForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Config\INI_Sample\fangpu_config_1200_example.ini" />
+    <None Include="Config\INI_Sample\fangpu_config_200_s7socket_example.ini" />
+    <None Include="Config\INI_Sample\fangpu_config_200_snap7_example.ini" />
+    <None Include="Config\INI_Sample\fangpu_warn_example.ini" />
+    <None Include="Config\Log4Net.config" />
     <None Include="Logger\Log4Net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

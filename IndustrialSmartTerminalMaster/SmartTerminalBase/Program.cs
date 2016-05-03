@@ -16,6 +16,7 @@ using SmartTerminalBase.DataBase;
 using SmartTerminalBase.FileEditor;
 using SmartTerminalBase.TerminalUltility;
 using System.Diagnostics;
+using FluentNHibernate.Automapping;
 using Modbus.IO;
 
 namespace SmartTerminalBase
@@ -214,13 +215,13 @@ namespace SmartTerminalBase
                                 session.Save(hi);
                                 trans.Commit();
                             }
-                            Console.WriteLine("Data Center Processed!,ex");
+                            Console.WriteLine("Data Center Processed!");
                         }
                         Thread.Sleep(1000);
                     }
                     catch (Exception ex)
                     {
-                        log.Error("Data Center Error:" ,ex ex);
+                        log.Error("Data Center Error:" ,ex);
                     }
                 }
             }
