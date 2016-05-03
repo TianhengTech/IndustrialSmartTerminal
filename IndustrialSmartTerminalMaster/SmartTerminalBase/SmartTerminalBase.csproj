@@ -121,6 +121,7 @@
     <Compile Include="Communication\ThSerial.cs" />
     <Compile Include="DataBase\NhibernateGroup.cs" />
     <Compile Include="DataBase\NhibernateHelper.cs" />
+    <Compile Include="DataBase\ThSqliteManager.cs" />
     <Compile Include="File\ConfigFileBase.cs" />
     <Compile Include="File\TextManagerBase.cs" />
     <Compile Include="File\ThExcelExport.cs">
@@ -145,6 +146,7 @@
     <Compile Include="TerminalUltility\ThTerminalQueues.cs" />
     <Compile Include="File\ThTextCommand.cs" />
     <Compile Include="Communication\ThS7PPI.cs" />
+    <Compile Include="TerminalUltility\ThWarnNotifier.cs" />
     <Compile Include="TestForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +177,9 @@
     <None Include="Config\INI_Sample\fangpu_config_200_snap7_example.ini" />
     <None Include="Config\INI_Sample\fangpu_warn_example.ini" />
     <None Include="Config\Log4Net.config" />
+    <None Include="Data\database.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Logger\Log4Net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

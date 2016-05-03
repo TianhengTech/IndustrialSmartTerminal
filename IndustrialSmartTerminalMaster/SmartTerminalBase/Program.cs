@@ -32,10 +32,12 @@ namespace SmartTerminalBase
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());
-            MinimalSystem p1 = new MinimalSystem();
-            p1.Run();
-            Console.ReadLine();
-            p1.Stop();
+            ThWarnNotifier p = new ThWarnNotifier();
+            p.CheckNumberOfInfo(20);
+            //MinimalSystem p1 = new MinimalSystem();
+            //p1.Run();
+            //Console.ReadLine();
+            //p1.Stop();
         }
     }
 
