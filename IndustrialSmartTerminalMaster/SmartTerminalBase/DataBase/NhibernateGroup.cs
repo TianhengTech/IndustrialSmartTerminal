@@ -9,15 +9,15 @@ namespace SmartTerminalBase.DataBase
         public virtual DateTime storetime { set; get; }
     }
 
-    //class historydataMapping:ClassMap<historydata>
-    //{
-    //    public historydataMapping()
-    //    {
-    //        Table("historydata");
-    //        Id<int>("idhistorydata").GeneratedBy.Identity();
-    //        Map(m => m.json_string).Nullable();
-    //        Map(m => m.storetime).Nullable();
+    class historydataMapping : ClassMap<historydata>
+    {
+        public historydataMapping()
+        {
+            Table("historydata");
+            Id<int>("idhistorydata").GeneratedBy.Identity();
+            Map(m => m.json_string).Nullable();
+            Map(m => m.storetime).Nullable();
 
-    //    }
-    //}
+        }
+    }
 }

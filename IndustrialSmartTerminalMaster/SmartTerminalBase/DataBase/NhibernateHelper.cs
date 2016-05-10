@@ -33,8 +33,8 @@ namespace SmartTerminalBase.DataBase
                              //连接字符串
                  .ConnectionString(
                       c => c.Server(Properties.Settings.Default.database_ip)
-                     .Password("tianheng123")
-                     .Username("root")
+                     .Password(Properties.Settings.Default.password)
+                     .Username(Properties.Settings.Default.id)
                      .Database(Properties.Settings.Default.database_name)                                        
                                     )                             //是否显示sql
                      //.ShowSql()
@@ -44,7 +44,7 @@ namespace SmartTerminalBase.DataBase
                       .Mappings(
                           m =>
                           {
-                              m.FluentMappings.AddFromAssembly(System.Reflection.Assembly.Load("SmartTerminalBase"));
+                             // m.FluentMappings.AddFromAssembly(System.Reflection.Assembly.Load("SmartTerminalBase")).ExportTo(".\\Mappings");
                               m.HbmMappings.AddFromAssembly(System.Reflection.Assembly.Load("SmartTerminalBase"));
                           }                       
                         )                         

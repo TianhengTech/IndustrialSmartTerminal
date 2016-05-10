@@ -95,15 +95,21 @@ namespace SmartTerminalBase.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string warnbytes {
+        [global::System.Configuration.DefaultSettingValueAttribute("tianheng123")]
+        public string password {
             get {
-                return ((string)(this["warnbytes"]));
+                return ((string)(this["password"]));
             }
-            set {
-                this["warnbytes"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("root")]
+        public string id {
+            get {
+                return ((string)(this["id"]));
             }
         }
     }

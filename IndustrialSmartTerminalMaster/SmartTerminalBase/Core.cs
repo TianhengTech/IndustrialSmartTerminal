@@ -63,7 +63,6 @@ namespace SmartTerminalBase
             sessionFactory = FluentNHibernateHelper.GetSessionFactory();
             Console.WriteLine("SessionFactory Got!");
 
-            
             TerminalCommon.PlcAddress = manager.ConvertToDictionary(manager.IniGetAllItems("./cfg.ini", "address"));
             Console.WriteLine(TerminalCommon.ConsoleMsgs["InitialSuccess"]);
 
@@ -76,7 +75,6 @@ namespace SmartTerminalBase
             TerminalCommon.warnflagname = Properties.Settings.Default.warnflag;
             Console.WriteLine(TerminalCommon.ConsoleMsgs["WarnMessageGot"]);
         }
-
         void ConnectToPlc()
         {
             s71200 = new ThPlcSnap7();

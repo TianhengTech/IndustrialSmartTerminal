@@ -1,0 +1,14 @@
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class xmlns="urn:nhibernate-mapping-2.2" name="SmartTerminalBase.DataBase.historydata, SmartTerminalBase, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" table="historydata">
+    <id type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="idhistorydata" />
+      <generator class="identity" />
+    </id>
+    <property name="json_string" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="json_string" not-null="false" />
+    </property>
+    <property name="storetime" type="System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <column name="storetime" not-null="false" />
+    </property>
+  </class>
+</hibernate-mapping>
