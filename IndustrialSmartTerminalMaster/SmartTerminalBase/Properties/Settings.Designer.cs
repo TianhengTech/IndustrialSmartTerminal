@@ -23,21 +23,87 @@ namespace SmartTerminalBase.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("COM3")]
         public string ModbusPort {
             get {
                 return ((string)(this["ModbusPort"]));
             }
+            set {
+                this["ModbusPort"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("COM4")]
         public string PPIport {
             get {
                 return ((string)(this["PPIport"]));
+            }
+            set {
+                this["PPIport"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.25")]
+        public string database_ip {
+            get {
+                return ((string)(this["database_ip"]));
+            }
+            set {
+                this["database_ip"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.51")]
+        public string plc_ip_s7200 {
+            get {
+                return ((string)(this["plc_ip_s7200"]));
+            }
+            set {
+                this["plc_ip_s7200"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("terminal_test")]
+        public string database_name {
+            get {
+                return ((string)(this["database_name"]));
+            }
+            set {
+                this["database_name"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("M0_5")]
+        public string warnflag {
+            get {
+                return ((string)(this["warnflag"]));
+            }
+            set {
+                this["warnflag"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string warnbytes {
+            get {
+                return ((string)(this["warnbytes"]));
+            }
+            set {
+                this["warnbytes"] = value;
             }
         }
     }

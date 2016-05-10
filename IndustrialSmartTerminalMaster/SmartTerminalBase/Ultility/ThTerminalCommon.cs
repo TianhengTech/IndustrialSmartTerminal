@@ -38,11 +38,14 @@ namespace SmartTerminalBase.TerminalUltility
         public static string S7200DataBit = "bit";
         public static string S7200DataWord = "word";
         public static string S7200DataDword = "dword";
+        public static bool warnflag;
+        public static string warnflagname;
+        public static readonly char[] wtype = "BWD".ToCharArray();
         //Your Dictionaries go here
-        public static Dictionary<string, string> realtime_gui = new Dictionary<string, string>();
         public static Dictionary<string, string> PlcAddress = new Dictionary<string, string>();
-
-
+        public static Dictionary<string, string> WarnInfo = new Dictionary<string, string>();
+        public static Dictionary<string, string> LogMsgs = new Dictionary<string, string>();
+        public static Dictionary<string, string> ConsoleMsgs = new Dictionary<string, string>();
         //获取内网IP
         public static string GetInternalIP()
         {

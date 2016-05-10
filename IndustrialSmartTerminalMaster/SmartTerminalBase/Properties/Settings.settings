@@ -2,11 +2,26 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SmartTerminalBase.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ModbusPort" Type="System.String" Scope="Application">
+    <Setting Name="ModbusPort" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM3</Value>
     </Setting>
-    <Setting Name="PPIport" Type="System.String" Scope="Application">
+    <Setting Name="PPIport" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM4</Value>
+    </Setting>
+    <Setting Name="database_ip" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.1.25</Value>
+    </Setting>
+    <Setting Name="plc_ip_s7200" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.1.51</Value>
+    </Setting>
+    <Setting Name="database_name" Type="System.String" Scope="User">
+      <Value Profile="(Default)">terminal_test</Value>
+    </Setting>
+    <Setting Name="warnflag" Type="System.String" Scope="User">
+      <Value Profile="(Default)">M0_5</Value>
+    </Setting>
+    <Setting Name="warnbytes" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

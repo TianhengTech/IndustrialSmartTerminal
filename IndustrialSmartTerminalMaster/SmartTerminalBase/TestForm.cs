@@ -15,7 +15,10 @@ namespace SmartTerminalBase
     {
         private SerialPort port;
         delegate void UpdateTextEventHandler(byte[] text);
+
+        private Thread read_thread;
         string a = "";
+        private bool runflag=false;
         UpdateTextEventHandler updateText;
         public TestForm()
         {
@@ -28,11 +31,14 @@ namespace SmartTerminalBase
         void UpdateTextBox(byte[] text)
         {
             string plainvalue="";
+            a = "";
+            if (text.Length < 6)
+                return;
             byte[] b = new byte[text.Length-6];
             Array.Copy(text, 5, b, 0, text.Length-6);
             for (int i = 0; i < text.Length - 6; i = i + 2)
             {
-                a=a+((BitConverter.ToInt16(new byte[] {b[i+1], b[i]}, 0)/65525.0d*2*10).ToString("0.0000"))+" ";
+                a=a+(((BitConverter.ToUInt16(new byte[] {b[i+1], b[i]}, 0)-32767)/32767.0d*10).ToString("0.0000"))+" ";
             }
             foreach (var item in b)
             {
@@ -53,10 +59,30 @@ namespace SmartTerminalBase
 
         private void button1_Click(object sender, EventArgs e)
         {
-            a = "";
-            byte[] buf = new byte[6];
-            buf = HexToByte("ff0400010106");
-            port.Write(buf,0,6);
+            if (runflag == false)
+            {
+                read_thread = new Thread(trig);
+                read_thread.IsBackground = true;
+                read_thread.Start();
+            }
+
+            
+            runflag = true;
+        }
+
+        private void trig()
+        {
+
+            while (true)
+            {
+                byte[] buf = new byte[6];
+                buf = HexToByte("ff0400010106");
+                port.Write(buf, 0, 6);
+                Thread.Sleep(Convert.ToInt32(textEdit1.Text));
+            }
+
+            
+
         }
         public void spReceive_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {
@@ -72,9 +98,6 @@ namespace SmartTerminalBase
             byte[] readBuffer = new byte[i];
             port.Read(readBuffer, 0,i);         
             this.Invoke(updateText, readBuffer );
-            // string readString = port.ReadExisting();
-            // Trace.WriteLine(readString);
-            // this.Invoke(updateText, new string[] { readString });
         }
 
         private static byte[] HexToByte(string hexString)
@@ -94,6 +117,12 @@ namespace SmartTerminalBase
             {
                 textEdit2.Enabled = false;
             }
+        }
+
+
+        private void textEdit1_EditValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

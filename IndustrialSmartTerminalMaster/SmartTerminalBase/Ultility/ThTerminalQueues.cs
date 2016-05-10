@@ -25,7 +25,7 @@ namespace SmartTerminalBase.TerminalUltility
     public class PLCWarningObject
     {
         public DateTime warn_time;
-        public string warndata;
+        public List<string> warndata;
     }
 
     //==================================================================

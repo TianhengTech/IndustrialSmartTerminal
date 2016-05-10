@@ -32,19 +32,22 @@ namespace SmartTerminalBase.DataBase
                  .Database(FluentNHibernate.Cfg.Db.MySQLConfiguration.Standard
                              //连接字符串
                  .ConnectionString(
-                      c => c.Server("192.168.1.25")
+                      c => c.Server(Properties.Settings.Default.database_ip)
                      .Password("tianheng123")
                      .Username("root")
-                     .Database("terminal_test")                                        
+                     .Database(Properties.Settings.Default.database_name)                                        
                                     )                             //是否显示sql
                      //.ShowSql()
                      )
                              //映射程序集
 
                       .Mappings(
-                         m => m.FluentMappings                         
-                         .AddFromAssembly(System.Reflection.Assembly.Load("SmartTerminalBase")))
-                         
+                          m =>
+                          {
+                              m.FluentMappings.AddFromAssembly(System.Reflection.Assembly.Load("SmartTerminalBase"));
+                              m.HbmMappings.AddFromAssembly(System.Reflection.Assembly.Load("SmartTerminalBase"));
+                          }                       
+                        )                         
                      .BuildSessionFactory(); 
                      }
                  }

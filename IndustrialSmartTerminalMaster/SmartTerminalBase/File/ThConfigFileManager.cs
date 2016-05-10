@@ -60,7 +60,7 @@ namespace SmartTerminalBase.FileEditor
         #endregion
 
         #region 读
-
+        //Your Dictionaries should be defined here
         public static Dictionary<string, int> addr = new Dictionary<string, int>();
         public static Dictionary<string, string> warnmsg = new Dictionary<string, string>();
 
