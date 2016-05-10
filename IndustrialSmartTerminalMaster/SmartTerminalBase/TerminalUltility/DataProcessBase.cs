@@ -19,6 +19,15 @@ namespace SmartTerminalBase.TerminalUltility
             return true;
         }
 
+        public virtual string DumpToJson(object obj)
+        {
+            return "";
+        }
+
+        public virtual t LoadFromJson<t>(string jsonstr)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<t>(jsonstr);
+        }
         public virtual List<int> PlcDump(byte[] bytes, int start, int size, int Numofbyte)
         {
             var mList = new List<int>();

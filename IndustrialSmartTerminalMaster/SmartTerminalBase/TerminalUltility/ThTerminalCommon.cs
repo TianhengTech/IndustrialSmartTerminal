@@ -5,6 +5,8 @@ namespace SmartTerminalBase.TerminalUltility
 {
     internal class TerminalCommon
     {
+        ///
+        ///
         ///Define Your Terminal variable here
         /// 
         /// 

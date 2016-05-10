@@ -29,11 +29,11 @@ namespace SmartTerminalBase
         //[STAThread]
         static void Main(string[] args)
         {
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
-            ThWarnNotifier p = new ThWarnNotifier();
-            p.CheckNumberOfInfo(20);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new TestForm());
+            //ThWarnNotifier p = new ThWarnNotifier();
+            //p.CheckNumberOfInfo(20);
             //MinimalSystem p1 = new MinimalSystem();
             //p1.Run();
             //Console.ReadLine();
