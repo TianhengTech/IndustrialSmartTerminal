@@ -61,7 +61,7 @@ namespace SmartTerminalBase.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.51")]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.50")]
         public string plc_ip_s7200 {
             get {
                 return ((string)(this["plc_ip_s7200"]));
@@ -85,7 +85,7 @@ namespace SmartTerminalBase.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("M0_5")]
+        [global::System.Configuration.DefaultSettingValueAttribute("MB0_5")]
         public string warnflag {
             get {
                 return ((string)(this["warnflag"]));
@@ -110,6 +110,30 @@ namespace SmartTerminalBase.Properties {
         public string id {
             get {
                 return ((string)(this["id"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("./config/cfg.ini")]
+        public string addr_cfg_path {
+            get {
+                return ((string)(this["addr_cfg_path"]));
+            }
+            set {
+                this["addr_cfg_path"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("./config/message.ini")]
+        public string msg_cfg_path {
+            get {
+                return ((string)(this["msg_cfg_path"]));
+            }
+            set {
+                this["msg_cfg_path"] = value;
             }
         }
     }

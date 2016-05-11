@@ -72,17 +72,13 @@ namespace SmartTerminalBase
 
         private void trig()
         {
-
             while (true)
             {
                 byte[] buf = new byte[6];
                 buf = HexToByte("ff0400010106");
                 port.Write(buf, 0, 6);
                 Thread.Sleep(Convert.ToInt32(textEdit1.Text));
-            }
-
-            
-
+            }            
         }
         public void spReceive_DataReceived(object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
         {

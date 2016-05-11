@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,17 +31,22 @@ namespace SmartTerminalBase
         private int warninfolength=0;
         private int warnstart;
         private string warnaddr;
+        private static byte[] DBbuffer = new byte[256];
+        private static byte[] Mbuffer = new byte[256];
+        private IntPtr DBptr;
+        private IntPtr Mptr;
+
 
         /// <summary>
         /// 程序启动
         /// </summary>
 
         public void Run()
-        {
+        {   
             log = LogManager.GetLogger(typeof(Core));
             Init();
             ConnectToPlc();
-            ConnectToSensor();
+          //  ConnectToSensor();
             ReadThread = new Thread(ReadCycle) { IsBackground = true };
             ReadThread.Start();
             log.Info("ReadThread" + TerminalCommon.LogMsgs["ThreadStart"]);
@@ -54,26 +60,43 @@ namespace SmartTerminalBase
         /// <summary>
         /// 初始化，读配置文件
         /// </summary>
-        private void Init()
+        unsafe private void Init()
         {
             ThConfigFileManager manager = new ThConfigFileManager();
-            TerminalCommon.LogMsgs = manager.ConvertToDictionary(manager.IniGetAllItems("./message.ini", "loginfo"));
-            TerminalCommon.ConsoleMsgs = manager.ConvertToDictionary(manager.IniGetAllItems("./message.ini", "console"));
-
-            sessionFactory = FluentNHibernateHelper.GetSessionFactory();
-            Console.WriteLine("SessionFactory Got!");
-
-            TerminalCommon.PlcAddress = manager.ConvertToDictionary(manager.IniGetAllItems("./cfg.ini", "address"));
+            TerminalCommon.LogMsgs = manager.ConvertToDictionary(manager.IniGetAllItems(Properties.Settings.Default.msg_cfg_path, "loginfo"));
+            TerminalCommon.ConsoleMsgs = manager.ConvertToDictionary(manager.IniGetAllItems(Properties.Settings.Default.msg_cfg_path, "console"));
+            TerminalCommon.PlcAddress = manager.ConvertToDictionary(manager.IniGetAllItems(Properties.Settings.Default.addr_cfg_path, "address"));
             Console.WriteLine(TerminalCommon.ConsoleMsgs["InitialSuccess"]);
 
-            TerminalCommon.WarnInfo = manager.ConvertToDictionary(manager.IniGetAllItems("./cfg.ini", "warninfo"));
-            var warnset = manager.IniGetAllItems("./cfg.ini", "warninforage");//DB1B0=2
+            GetSessionFactory:
+            {
+                 try
+                {
+                    sessionFactory = FluentNHibernateHelper.GetSessionFactory();
+                }
+                catch(FluentNHibernate.Cfg.FluentConfigurationException)
+                {
+                    log.Error(TerminalCommon.LogMsgs["FluentCfgError"]);
+                    Console.WriteLine(TerminalCommon.ConsoleMsgs["FluentCfgError"]);
+                }                
+            }
+            Console.WriteLine("SessionFactory Got!");
+
+            TerminalCommon.WarnInfo = manager.ConvertToDictionary(manager.IniGetAllItems(Properties.Settings.Default.addr_cfg_path, "warninfo"));
+            var warnset = manager.IniGetAllItems(Properties.Settings.Default.addr_cfg_path, "warninforage");//DB1B0=2
             warnaddr =warnset[0].Split('=')[0];//DB1B0
             warnstart = Convert.ToInt32(warnaddr.Substring(warnaddr.Length - 1, 1));// 警告开始地址 0
             warnaddr = warnaddr.Substring(0, warnaddr.Length - 1);//警报区域信息 DB1B0
             warninfolength = Convert.ToInt32(warnset[0].Split('=')[1]);//报警数据的字节数 2
             TerminalCommon.warnflagname = Properties.Settings.Default.warnflag;
             Console.WriteLine(TerminalCommon.ConsoleMsgs["WarnMessageGot"]);
+
+            DBptr = Marshal.UnsafeAddrOfPinnedArrayElement(DBbuffer, 0);
+            Mptr = Marshal.UnsafeAddrOfPinnedArrayElement(Mbuffer, 0);//内存虚拟地址
+            log.Debug("DBptr: " + DBptr + " Mptr: " + Mptr);
+
+
+
         }
         void ConnectToPlc()
         {
@@ -82,11 +105,11 @@ namespace SmartTerminalBase
             {
                 Console.WriteLine("S7-1200 " + TerminalCommon.ConsoleMsgs["ConnectSuccess"]);
             }
-            S7200 = new S7_PPI(Properties.Settings.Default.PPIport, 9600);
-            if (S7200.Connect(0x02))
-            {
-                Console.WriteLine("S7-200 " + TerminalCommon.ConsoleMsgs["ConnectSuccess"]);
-            }
+            //S7200 = new S7_PPI(Properties.Settings.Default.PPIport, 9600);
+            //if (S7200.Connect(0x02))
+            //{
+            //    Console.WriteLine("S7-200 " + TerminalCommon.ConsoleMsgs["ConnectSuccess"]);
+            //}
         }
         /// <summary>
         /// 连接MODBUS
@@ -111,8 +134,8 @@ namespace SmartTerminalBase
                 sw.Start();
                 var plcdata = new PlcDAQCommunicationObject();
                 plcread = Read1200(plcdata,buffer);
-                plcread_ppi = Read200(plcdata);
-                sensorread = Read3038(plcdata);  
+                //plcread_ppi = Read200(plcdata);
+                //sensorread = Read3038(plcdata);  
              
                 if (plcread || sensorread || plcread_ppi)
                 {
@@ -237,7 +260,6 @@ namespace SmartTerminalBase
             }
             return results;
         }
-
         /// <summary>
         /// 将接收到的byte数据按地址名称存入字典
         /// </summary>
@@ -302,7 +324,7 @@ namespace SmartTerminalBase
         /// <param name="plcdata"></param>
         /// <param name="buffer"></param>
         /// <returns></returns>
-        bool Read1200(PlcDAQCommunicationObject plcdata,byte[] buffer)
+        bool Read1200(PlcDAQCommunicationObject plcdata, byte[] buffer)
         {
             if (!s71200.IsConneted())
             {
@@ -313,24 +335,71 @@ namespace SmartTerminalBase
             }
             else
             {
+                int i=0;
+                int readtimes = TerminalCommon.PlcAddress.Count();
+                int[] starts = new int[readtimes];
+                int[] sizes=new int[readtimes];
+                bool isDbAddr=false,isMaddr=false;
+                Snap7.S7Client.S7DataItem[] DataItem = new Snap7.S7Client.S7DataItem[readtimes];
                 foreach (var item in TerminalCommon.PlcAddress)
                 {
                     string[] range = item.Value.Split('-');
                     int start = Convert.ToInt32(range[0]);
                     int end = Convert.ToInt32(range[1]);
                     int size = end - start + 1;
+                    starts[i]=start;
+                    sizes[i]=size;
+
                     if (item.Key.Contains("DB"))
                     {
-                        if (s71200.ReadDb(ThPlcSnap7.S7AreaDB, 1, start, size, ThPlcSnap7.S7WLByte, buffer) == 0)
-                        {
-                            BufferDump(plcdata, buffer, start, size, "DB");
-                        }
-                        string plctime = s71200.PlCstatus();
-                        plcdata.plc_time["PLC_TIME"] = plctime;
+                       
+                        DataItem[i].Area = ThPlcSnap7.S7AreaDB;
+                        DataItem[i].DBNumber = 1;
+                        DataItem[i].WordLen = ThPlcSnap7.S7WLByte;
+                        DataItem[i].Start = start;
+                        DataItem[i].Amount = size;
+                        DataItem[i].pData = DBptr;
+                        isDbAddr=true;
+                        //if (s71200.ReadDb(ThPlcSnap7.S7AreaDB, 1, start, size, ThPlcSnap7.S7WLByte, buffer) == 0)
+                        //{
+                        //    //BufferDump(plcdata, buffer, start, size, "DB");
+                        //}
                     }
+                    else if (item.Key.Contains("M"))
+                    {
+                        DataItem[i].Area = ThPlcSnap7.S7AreaMK;
+                        DataItem[i].DBNumber = 0;
+                        DataItem[i].WordLen = ThPlcSnap7.S7WLByte;
+                        DataItem[i].Start = start;
+                        DataItem[i].Amount = size;
+                        DataItem[i].pData = Mptr;
+                        isMaddr = true;
+                        //if (s71200.Read(ThPlcSnap7.S7AreaMK, start, size, ThPlcSnap7.S7WLByte, buffer) == 0)
+                        //{
+                        //    BufferDump(plcdata, buffer, start, size, "M");
+                        //}
+                    }
+                    i++;
                 }
-                Console.WriteLine("S7-1200 READ");
-                return true;
+                string plctime = s71200.PlCstatus();
+                plcdata.plc_time["PLC_TIME"] = plctime;
+                if (s71200.ReadMultiVars(DataItem, readtimes) == 0)
+                {
+                    for (i = 0; i < readtimes; i++)
+                    {
+                        if(isMaddr)   
+                        BufferDump(plcdata, Mbuffer, starts[i], sizes[i], "M");
+                        if(isDbAddr)
+                        BufferDump(plcdata, DBbuffer, starts[i], sizes[i], "DB");
+                    }
+                    Console.WriteLine("S7-1200 READ");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
             }
         }
         /// <summary>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using Snap7;
 
 namespace SmartTerminalBase.Communication
@@ -104,6 +105,17 @@ namespace SmartTerminalBase.Communication
         private const int JobComplete = 0;
         private const int JobPending = 1;
 
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct S7DataItem
+        {
+            public Int32 Area;
+            public Int32 WordLen;
+            public Int32 Result;
+            public Int32 DBNumber;
+            public Int32 Start;
+            public Int32 Amount;
+            public IntPtr pData;
+        }
         #endregion
 
         ~ThPlcSnap7()
