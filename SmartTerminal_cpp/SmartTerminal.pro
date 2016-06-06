@@ -18,3 +18,4 @@ HEADERS += \
     snap7client.h \
     main.h
 LIBS += -LD:\CppProject\QTterminal\SmartTerminal -lsnap7
+QT +=sql
