@@ -21,6 +21,7 @@ public:
     int mb_write_register(int addr, int value);
     int mb_write_coil(int addr,int status);
     int mb_write_coils(int addr, int nb, const uint8_t *src);
+    int mb_bytetimeout(int sec,int usec);
     void mb_close();
     void mb_freemb();
     int mb_flush();

@@ -22,6 +22,7 @@
 #include<Config/inimanager.h>
 #include "Ultility/bufferconverter.h"
 #include <vector>
+
 using namespace std;
 
 class ReadThread:public QThread
@@ -48,6 +49,7 @@ class DatacenterThread:public QThread
     Q_OBJECT
 public:
     void datastorage();
+    void datastorage_orm();
 protected:
     void run();
 };

@@ -10,8 +10,9 @@
 class logger
 {
 public:
-    void  getlogger(QtMsgType type, const QMessageLogContext &context, const QString &msg);
     void  setlogger();
+private:
+    void  getlogger(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 };
 
 #endif // LOGGER_H

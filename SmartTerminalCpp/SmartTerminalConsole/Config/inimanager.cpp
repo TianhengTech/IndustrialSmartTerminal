@@ -2,6 +2,12 @@
 #include <QDebug>
 using namespace std;
 //写配置文件
+/**
+ * @brief inimanager::writeini
+ * @param name
+ * @param para
+ * @param inimap
+ */
 void inimanager::writeini(QString name,QString para,map<QString,QString> inimap)
 {
     QSettings cfgIniWrite(name+".ini",QSettings::IniFormat);
@@ -10,9 +16,13 @@ void inimanager::writeini(QString name,QString para,map<QString,QString> inimap)
     {
         cfgIniWrite.setValue(kv.first,kv.second);
     }
-
 }
-//读配置文件,para=allpara时读所有章节
+/**
+ * @brief 读配置文件,para=allpara时读所有章节
+ * @param filename
+ * @param para
+ * @return
+ */
 map<QString,QString> inimanager::readini(QString filename,QString para)
 {
     QSettings cfgIniRead(filename+".ini",QSettings::IniFormat);

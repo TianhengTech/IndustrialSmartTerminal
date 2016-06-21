@@ -1,7 +1,12 @@
 #include "logger.h"
 #include "QTime"
 
-
+/**
+ * @brief getlogger
+ * @param type
+ * @param context
+ * @param msg
+ */
 void getlogger(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     static QMutex mutex;
@@ -39,6 +44,9 @@ void getlogger(QtMsgType type, const QMessageLogContext &context, const QString 
 
     mutex.unlock();
 }
+/**
+ * @brief 设置日志
+ */
 void setlogger()
 {
     qInstallMessageHandler(getlogger);

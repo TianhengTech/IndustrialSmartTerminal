@@ -1,3 +1,16 @@
+include(D:/Qt/QxOrm/QxOrm.pri)
+
+###############################
+
+# QXORM Library Configuration #
+
+###############################
+
+isEmpty(QXORM_INCLUDE_PATH) { QXORM_INCLUDE_PATH = $$quote(D:/Qt/QxOrm/include) }
+
+isEmpty(QXORM_LIB_PATH) { QXORM_LIB_PATH = $$quote(D:/Qt/QxOrm/lib) }
+
+
 QT += core
 QT -= gui
 
@@ -8,7 +21,27 @@ CONFIG += console
 CONFIG -= app_bundle
 QT += axcontainer
 QT += serialport
+
+
 TEMPLATE = app
+
+
+INCLUDEPATH += $${QXORM_INCLUDE_PATH}
+
+PRECOMPILED_HEADER = ./Database/QxORM/precompiled.h
+
+LIBS += -L$${QXORM_LIB_PATH}
+
+
+CONFIG(debug, debug|release) {
+
+LIBS += -lQxOrmd
+
+} else {
+
+LIBS += -lQxOrm
+
+} # CONFIG(debug, debug|release)
 
 SOURCES += main.cpp \
     Communication/snap7.cpp \
@@ -24,7 +57,8 @@ SOURCES += main.cpp \
     Communication/modbusc.cpp \
     File/fileeditor.cpp \
     Communication/serialcom.cpp \
-    Ultility/terminalqueues.cpp
+    Ultility/terminalqueues.cpp \
+    Database/QxORM/historydata.cpp
 
 HEADERS += \
     main.h \
@@ -45,7 +79,10 @@ HEADERS += \
     Communication/libmodbus/modbus.h \
     Communication/modbusc.h \
     File/fileeditor.h \
-    Communication/serialcom.h
+    Communication/serialcom.h \
+    Database/QxORM/precompiled.h \
+    Database/QxORM/export.h \
+    Database/QxORM/historydata.h
 LIBS += -LD:\CppProject\QTterminal\SmartTerminal -lsnap7
 LIBS += -lws2_32
 QT +=sql

@@ -6,7 +6,15 @@ bufferconverter::bufferconverter()
 
 }
 
-//将字节数据以VECTOR的形式保存在字典中
+/**
+ * @brief 将字节数据VECTOR的形式保存在字典中,VECTOR为字节数组
+ * @param datamap 要存入的字典
+ * @param area PLC数据区域
+ * @param start 起始地址
+ * @param range 数据总长度
+ * @param wordlen 单个数据块长度(以字节计）
+ * @param buffer 数据缓存
+ */
 void bufferconverter::datadump(QMap<QString,vector<byte>> &datamap,QString area,int start,int range,int wordlen,byte buffer[])
 {
         QString wtype="BWD";
@@ -23,7 +31,11 @@ void bufferconverter::datadump(QMap<QString,vector<byte>> &datamap,QString area,
             datamap[key]=bytes;
         }
 }
-
+/**
+ * @brief 反转数组
+ * @param 数组
+ * @param 长度
+ */
 void bufferconverter::reverseArray(byte inarray[],int count)
 {
     int temp, i, j, k = (count - 1) / 2;

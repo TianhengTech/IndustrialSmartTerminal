@@ -5,6 +5,12 @@ ExcelExport::ExcelExport()
 {
 
 }
+/**
+ * @brief 输出数据到Excel
+ * @param filename 输出文件名(如work.xlsx)
+ * @param rowcontent 数据列表
+ * @param nocolumn 将数据列表分为多少行
+ */
 void ExcelExport::fexport(QString filename,QStringList rowcontent,int nocolumn)
 {
     QAxObject excel("Excel.Application");

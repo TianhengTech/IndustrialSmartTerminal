@@ -1,7 +1,11 @@
 #include "main.h"
 #include <qmap>
-using namespace std;
+#include <QxMemLeak.h>
+#include "./DataBase/QxORM/precompiled.h"
+#include "./DataBase/QxORM/historydata.h"
 
+using namespace std;
+//成员定义
 byte DataBuffer[256];
 TS7Client *Client;
 extern queue<buffstruct> dataprocessqueue;
@@ -21,7 +25,10 @@ void DatacenterThread::run()
 {
     datastorage();
 }
-//数据处理线程
+
+/**
+ * @brief 数据处理线程
+ */
 void ProcessThread::dataprocess()
 {
     while(1)
@@ -48,11 +55,14 @@ void ProcessThread::dataprocess()
         }
     }
 }
-//读PLC线程
+
+/**
+ * @brief //读PLC线程
+ */
 void ReadThread::readcycle()
 {
     Client=new TS7Client();
-    int result=Client->ConnectTo("192.168.1.50",0,0);
+    Client->ConnectTo("192.168.1.50",0,0);
     QString Key,Value;
     int start,end,range,wordlen;
     while(1)
@@ -106,7 +116,9 @@ void ReadThread::readcycle()
 
 
 
-//数据上传线程
+/**
+ * @brief 数据上传线程
+ */
 void DatacenterThread::datastorage()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "My_connection");
@@ -137,12 +149,49 @@ void DatacenterThread::datastorage()
         }
 }
 
-
+/**
+ * @brief 初始化
+ */
 void init()
 {
-    addr=inimanager::readini("address","AreaDB");
+    addr=inimanager::readini("address","AreaDB");//读取配置文件
 }
+void DatacenterThread::datastorage_orm()
+{
+    qx::QxSqlDatabase::getSingleton()->setDriverName("QMYSQL");
+    qx::QxSqlDatabase::setHostName("192.168.1.25");
+    qx::QxSqlDatabase::setDatabaseName("terminal_test");
+    qx::QxSqlDatabase::getSingleton()->setUserName("root");
+    qx::QxSqlDatabase::setPassword("tianheng123");
 
+    while(1)
+    {
+        if(!datacenterqueue.empty())
+        {
+            try
+            {
+                dataobject jsonobject=datacenterqueue.front();
+                historydata data=new historydata();
+                data.json=jsonobject.json_string;
+                data.time=jsonobject.current_date_time;
+                qx::dao::insert(data);
+                delete(data);
+            }
+            catch
+            {
+                delete(data);
+                qDebug("数据库上传错误");
+            }
+
+        }
+    }
+}
+/**
+ * @brief 主函数
+ * @param argc
+ * @param argv
+ * @return
+ */
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
