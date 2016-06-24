@@ -1,0 +1,4 @@
+<RCC>
+    <qresource prefix="/Config/address.ini"/>
+    <qresource prefix="/Config/databas2e.ini"/>
+</RCC>

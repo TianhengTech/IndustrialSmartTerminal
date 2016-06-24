@@ -11,6 +11,7 @@ TS7Client *Client;
 extern queue<buffstruct> dataprocessqueue;
 extern queue<dataobject> datacenterqueue;
 map<QString,QString> addr;
+map<QString,QString> dbset;
 
 
 void ReadThread::run()
@@ -122,10 +123,10 @@ void ReadThread::readcycle()
 void DatacenterThread::datastorage()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL", "My_connection");
-        db.setDatabaseName("terminal_test");
-        db.setHostName("192.168.1.25");
-        db.setUserName("root");
-        db.setPassword("tianheng123");
+        db.setDatabaseName(dbset["dbname"]);
+        db.setHostName(dbset["ip"]);
+        db.setUserName(dbset["user"]);
+        db.setPassword(dbset["password"]);
         if (!db.open())
         {
             qDebug() << "Connect to MySql error: " << db.lastError().text();
@@ -154,15 +155,19 @@ void DatacenterThread::datastorage()
  */
 void init()
 {
-    addr=inimanager::readini("address","AreaDB");//读取配置文件
+    addr=inimanager::readini("./Config/address","AreaDB");//读取DB配置文件
+    dbset=inimanager::readini("./Config/database","dbset");//读数据库配置文件
 }
+/**
+ * @brief 数据上传ORM
+ */
 void DatacenterThread::datastorage_orm()
 {
     qx::QxSqlDatabase::getSingleton()->setDriverName("QMYSQL");
-    qx::QxSqlDatabase::setHostName("192.168.1.25");
-    qx::QxSqlDatabase::setDatabaseName("terminal_test");
-    qx::QxSqlDatabase::getSingleton()->setUserName("root");
-    qx::QxSqlDatabase::setPassword("tianheng123");
+    qx::QxSqlDatabase::setHostName(dbset["ip"]);//"192.168.1.25"
+    qx::QxSqlDatabase::setDatabaseName(dbset["dbname"]);
+    qx::QxSqlDatabase::getSingleton()->setUserName(dbset["user"]);
+    qx::QxSqlDatabase::setPassword(dbset["password"]);
 
     while(1)
     {

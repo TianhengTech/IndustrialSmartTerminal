@@ -88,4 +88,8 @@ LIBS += -lws2_32
 QT +=sql
 
 DISTFILES += \
-    README.MD
+    README.MD \
+    Config/address.ini \
+    Config/database.ini
+
+RESOURCES +=
